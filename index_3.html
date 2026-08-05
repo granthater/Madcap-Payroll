@@ -1,0 +1,2030 @@
+<style>
+  :root{
+    --ink:#241f1a;
+    --paper:#faf7f2;
+    --panel:#ffffff;
+    --line:#e4dcd0;
+    --amber:#c8791f;
+    --amber-deep:#9c5a12;
+    --ok:#2f6f4f;
+    --warn:#b8390e;
+    --muted:#8a7f70;
+    --mono: 'SF Mono', 'Consolas', 'Menlo', monospace;
+    --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+  *{box-sizing:border-box;}
+  #mc-root{
+    font-family:var(--sans);
+    color:var(--ink);
+    background:var(--paper);
+    min-height:100%;
+    padding:0;
+    font-size:14px;
+    line-height:1.4;
+  }
+  .mc-header{
+    display:flex; align-items:baseline; justify-content:space-between;
+    padding:20px 24px 14px 24px;
+    border-bottom:2px solid var(--ink);
+  }
+  .mc-title{font-size:20px; font-weight:800; letter-spacing:-0.01em;}
+  .mc-title span{color:var(--amber-deep);}
+  .mc-sub{font-size:12px; color:var(--muted); font-family:var(--mono);}
+  .mc-tabs{
+    display:flex; flex-wrap:wrap; gap:2px;
+    padding:10px 24px; background:#f1ece2; border-bottom:1px solid var(--line);
+  }
+  .mc-tab{
+    padding:6px 12px; font-size:12.5px; font-weight:600; cursor:pointer;
+    border-radius:5px; color:var(--muted); white-space:nowrap;
+    border:1px solid transparent;
+  }
+  .mc-tab:hover{background:#e7ded0;}
+  .mc-tab.active{background:var(--ink); color:var(--paper);}
+  .mc-tabgroup-label{
+    font-size:10px; text-transform:uppercase; letter-spacing:0.08em; color:var(--muted);
+    padding:6px 8px 0 8px; width:100%; font-weight:700;
+  }
+  .mc-body{padding:20px 24px 60px 24px;}
+  .mc-panel{
+    background:var(--panel); border:1px solid var(--line); border-radius:10px;
+    padding:18px; margin-bottom:16px;
+  }
+  .mc-panel h2{margin:0 0 4px 0; font-size:15px;}
+  .mc-panel .mc-desc{font-size:12px; color:var(--muted); margin-bottom:14px;}
+  table.mc-table{width:100%; border-collapse:collapse; font-size:13px;}
+  table.mc-table th{
+    text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:0.05em;
+    color:var(--muted); border-bottom:1px solid var(--line); padding:6px 8px; font-weight:700;
+  }
+  table.mc-table td{padding:5px 8px; border-bottom:1px solid #f0ebe1; vertical-align:middle;}
+  table.mc-table tr:hover td{background:#fbf8f2;}
+  .mc-input{
+    width:100%; border:1px solid var(--line); border-radius:5px; padding:4px 6px;
+    font-size:13px; font-family:var(--sans); background:#fff;
+  }
+  .mc-input:focus{outline:2px solid var(--amber); outline-offset:0; border-color:var(--amber);}
+  .mc-input.mc-num{font-family:var(--mono); text-align:right;}
+  .mc-btn{
+    background:var(--ink); color:var(--paper); border:none; border-radius:6px;
+    padding:7px 13px; font-size:12.5px; font-weight:700; cursor:pointer;
+  }
+  .mc-btn:hover{background:#3a3227;}
+  .mc-btn.secondary{background:transparent; color:var(--ink); border:1px solid var(--line);}
+  .mc-btn.secondary:hover{background:#f1ece2;}
+  .mc-btn.danger{background:transparent; color:var(--warn); border:1px solid #e8c3b0;}
+  .mc-btn:disabled{opacity:0.4; cursor:not-allowed;}
+  .mc-pill{
+    display:inline-block; font-size:10.5px; font-weight:700; padding:2px 7px; border-radius:99px;
+    font-family:var(--mono);
+  }
+  .mc-pill.ok{background:#e4f2ea; color:var(--ok);}
+  .mc-pill.warn{background:#fbe9e0; color:var(--warn);}
+  .mc-pill.info{background:#f1ece2; color:var(--muted);}
+  .mc-flagrow{background:#fff8f0 !important;}
+  .mc-row-yellow{background:#fdf1c4 !important;}
+  .mc-row-red{background:#f7cdcd !important;}
+  .mc-row-green{background:#d9f0e1 !important;}
+  .mc-checkbox{width:16px; height:16px;}
+  .mc-toolbar{display:flex; gap:8px; align-items:center; margin-bottom:12px; flex-wrap:wrap;}
+  .mc-search{max-width:260px;}
+  .mc-stat{
+    display:flex; flex-direction:column; gap:2px; padding:14px 16px;
+    background:#fff; border:1px solid var(--line); border-radius:10px; flex:1; min-width:140px;
+  }
+  .mc-stat .mc-stat-label{font-size:10.5px; text-transform:uppercase; letter-spacing:0.06em; color:var(--muted); font-weight:700;}
+  .mc-stat .mc-stat-val{font-size:22px; font-weight:800; font-family:var(--mono);}
+  .mc-statrow{display:flex; gap:12px; flex-wrap:wrap; margin-bottom:16px;}
+  .mc-dropzone{
+    border:2px dashed var(--line); border-radius:10px; padding:28px; text-align:center;
+    color:var(--muted); font-size:13px; cursor:pointer; background:#fff;
+  }
+  .mc-dropzone:hover{border-color:var(--amber);}
+  .mc-dropzone.drag{border-color:var(--amber); background:#fff8f0;}
+  .mc-empty{color:var(--muted); font-size:13px; padding:20px; text-align:center;}
+  .mc-flagtext{font-size:12px; color:var(--warn);}
+  .mc-small{font-size:11px; color:var(--muted);}
+  .mc-monthpick{font-family:var(--mono); font-size:13px; padding:5px 8px; border:1px solid var(--line); border-radius:6px;}
+  a.mc-link{color:var(--amber-deep); cursor:pointer; text-decoration:underline; font-size:12px;}
+  .mc-savebar{font-size:11px; color:var(--muted); font-family:var(--mono); display:flex; align-items:center; gap:6px;}
+  .mc-dot{width:7px; height:7px; border-radius:99px; background:var(--ok); display:inline-block;}
+</style>
+
+<div id="mc-root">
+  <div class="mc-header">
+    <div>
+      <div class="mc-title">Madcap <span>Payroll &amp; P&amp;L</span></div>
+      <div class="mc-sub">private lessons · shared workspace</div>
+    </div>
+    <div class="mc-savebar" id="mc-savebar"><span class="mc-dot"></span> synced</div>
+  </div>
+
+  <div class="mc-tabs" id="mc-tabs"></div>
+  <div class="mc-body" id="mc-body"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script>
+(function(){
+
+const SEED_ROSTER = []; // real data lives entirely in the connected Google Sheet now
+const SEED_ROCK_BANDS = []; // real data lives entirely in the connected Google Sheet now
+
+const TEACHERS = ["Carl Shepard","David Puthoff","Elisha Walker","Grant Hater","John Bertke","Logan Montgomery","Mary White","Nick Federinko","Sarah Gorak","Spencer Caudill","Yun-Huei Jen"];
+
+let state = {
+  roster: null,        // array of student rows
+  rockSessions: null,   // array of { id, name, months:[label...], bands:[...] }
+  imports: {},          // { "2026-07": {label, rows:[...], summary:{...}, importedAt} }
+  activeTab: 'teacher:' + TEACHERS[0],
+  activeImportMonth: null,
+  _activeRockMonth: null,
+};
+function getActiveSession(){
+  const sessions = state.rockSessions || [];
+  return sessions.length ? sessions[sessions.length-1] : null;
+}
+
+// ---------- storage helpers ----------
+const BACKEND_URL = 'https://script.google.com/macros/s/AKfycby8O25BBApJXcdUFVuzBbTh_b8fd3qoAS0Hc5dN0nzaoOFZVgnSemdpGkQCKveWJNm1/exec';
+
+let APP_PASSCODE = null;
+let _jsonpCounter = 0;
+
+function jsonpRequest(params){
+  return new Promise((resolve, reject) => {
+    const cbName = '_mc_jsonp_cb_' + (_jsonpCounter++) + '_' + Date.now();
+    const timeout = setTimeout(() => {
+      cleanup();
+      reject(new Error('JSONP request timed out'));
+    }, 10000);
+
+    function cleanup(){
+      clearTimeout(timeout);
+      delete window[cbName];
+      if(script.parentNode) script.parentNode.removeChild(script);
+    }
+
+    window[cbName] = (data) => { cleanup(); resolve(data); };
+
+    const qs = new URLSearchParams({ ...params, callback: cbName }).toString();
+    const script = document.createElement('script');
+    script.src = `${BACKEND_URL}?${qs}`;
+    script.onerror = () => { cleanup(); reject(new Error('JSONP script failed to load')); };
+    document.body.appendChild(script);
+  });
+}
+
+async function backendGet(key, _attempt){
+  const attempt = _attempt || 1;
+  try{
+    const data = await jsonpRequest({ action:'get', key, passcode: APP_PASSCODE });
+    if(data.error === 'Unauthorized') return { unauthorized: true };
+    if(!data.found) return { confirmedNotFound: true };
+    return { value: data.value };
+  }catch(e){
+    if(attempt < 3){
+      await new Promise(r=>setTimeout(r, 400*attempt));
+      return backendGet(key, attempt+1);
+    }
+    console.error('backendGet failed for', key, 'after', attempt, 'attempts', e);
+    return { networkError: true };
+  }
+}
+async function backendDelete(key, _attempt){
+  const attempt = _attempt || 1;
+  try{
+    const data = await jsonpRequest({ action:'delete', key, passcode: APP_PASSCODE });
+    if(data.error === 'Unauthorized') return { unauthorized: true };
+    return { success: true };
+  }catch(e){
+    if(attempt < 3){
+      await new Promise(r=>setTimeout(r, 400*attempt));
+      return backendDelete(key, attempt+1);
+    }
+    console.error('backendDelete failed for', key, 'after', attempt, 'attempts', e);
+    return { networkError: true };
+  }
+}
+async function backendSet(key, value, _attempt){
+  const attempt = _attempt || 1;
+  try{
+    // JSON expands roughly 1.7x once URL-encoded (lots of quotes/braces/colons need
+    // escaping) - keep chunks small enough that even with that expansion plus the
+    // surrounding URL overhead, we stay comfortably under any reasonable server limit.
+    const CHUNK_SIZE = 800;
+    const chunks = [];
+    for(let i=0; i<value.length; i+=CHUNK_SIZE){
+      chunks.push(value.slice(i, i+CHUNK_SIZE));
+    }
+    if(chunks.length === 0) chunks.push('');
+    const uploadId = 'u' + Date.now() + '_' + Math.random().toString(36).slice(2,8);
+    for(let i=0; i<chunks.length; i++){
+      let chunkOk = false;
+      let lastErr = null;
+      for(let chunkAttempt=1; chunkAttempt<=3 && !chunkOk; chunkAttempt++){
+        try{
+          const data = await jsonpRequest({
+            action:'setChunk', key, uploadId,
+            idx: i, total: chunks.length, chunk: chunks[i],
+            passcode: APP_PASSCODE
+          });
+          if(data.error === 'Unauthorized') return { unauthorized: true };
+          chunkOk = true;
+        }catch(e){
+          lastErr = e;
+          if(chunkAttempt < 3) await new Promise(r=>setTimeout(r, 300*chunkAttempt));
+        }
+      }
+      if(!chunkOk) throw lastErr || new Error('Chunk '+i+' failed');
+    }
+    return {};
+  }catch(e){
+    if(attempt < 3){
+      await new Promise(r=>setTimeout(r, 400*attempt));
+      return backendSet(key, value, attempt+1);
+    }
+    console.error('backendSet failed for', key, 'after', attempt, 'attempts', e);
+    return { networkError: true };
+  }
+}
+
+async function loadState(){
+  state._loadError = null;
+
+  const r = await backendGet('roster');
+  if(r.value !== undefined){
+    try{ state.roster = JSON.parse(r.value); }
+    catch(e){ state._loadError = 'Your saved roster data looks corrupted and could not be read.'; state.roster = SEED_ROSTER.slice(); }
+  } else if(r.confirmedNotFound){
+    state.roster = SEED_ROSTER.slice();
+  } else {
+    // networkError or unauthorized: do NOT silently substitute seed data over real data
+    state._loadError = 'Could not load your saved data (connection issue). Please refresh rather than editing right now.';
+    state.roster = SEED_ROSTER.slice();
+  }
+
+  const rb = await backendGet('rock-sessions');
+  if(rb.value !== undefined){
+    try{ state.rockSessions = JSON.parse(rb.value); }
+    catch(e){ state._loadError = 'Your saved Rock Academy data looks corrupted and could not be read.'; state.rockSessions = null; }
+  } else if(rb.confirmedNotFound){
+    // Genuinely confirmed empty by the server - safe to run the one-time legacy migration/seed.
+    let legacyBands = null;
+    const legacy = await backendGet('rock-bands');
+    if(legacy.value !== undefined){
+      try{ legacyBands = JSON.parse(legacy.value); }catch(e){}
+    }
+    const sourceBands = legacyBands || SEED_ROCK_BANDS;
+    const seeded = sourceBands.map(b => ({...b, monthlyClasses: (b.monthlyClasses || {})}));
+    state.rockSessions = [{ id: 'session_summer_2026', name: 'Summer 2026', months: ['July 2026'], bands: seeded }];
+    await saveRockSessions();
+  } else {
+    // networkError or unauthorized: never overwrite with seed data here.
+    state._loadError = 'Could not load your saved Rock Academy data (connection issue). Please refresh rather than editing right now.';
+    state.rockSessions = null;
+  }
+
+  const im = await backendGet('imports-index');
+  if(im.value !== undefined){
+    let months = [];
+    try{ months = JSON.parse(im.value); }catch(e){ months = []; }
+    for(const m of months){
+      const rec = await backendGet('import:'+m);
+      if(rec.value !== undefined){
+        try{ state.imports[m] = JSON.parse(rec.value); }catch(e){}
+      }
+    }
+    if(months.length) state.activeImportMonth = months[months.length-1];
+  }
+  // if imports-index is confirmedNotFound, that's a legitimate "no imports yet" - leave state.imports as {}
+  // if it's a networkError/unauthorized, we simply won't have imports this load; not destructive since we never write imports-index here
+}
+
+async function verifiedBackendSet(key, value, _attempt){
+  const attempt = _attempt || 1;
+  await backendSet(key, value);
+  // brief pause before checking - guards against checking the Sheet before a write
+  // has fully landed, not just against outright network failures
+  await new Promise(r=>setTimeout(r, 500));
+  const check = await backendGet(key);
+  if(check.value === value) return true;
+
+  if(attempt < 3){
+    console.warn('Save verification failed for', key, '- retrying (attempt', attempt+1, ')');
+    return verifiedBackendSet(key, value, attempt+1);
+  }
+  console.error('Save verification failed for', key, 'after', attempt, 'attempts - Sheet did not reflect the new value.');
+  return false;
+}
+
+async function saveRoster(){
+  setSyncing();
+  const ok = await verifiedBackendSet('roster', JSON.stringify(state.roster));
+  if(ok){ setSynced(); } else { setSaveFailed('roster'); }
+}
+async function saveRockSessions(){
+  setSyncing();
+  const ok = await verifiedBackendSet('rock-sessions', JSON.stringify(state.rockSessions));
+  if(ok){ setSynced(); } else { setSaveFailed('Rock Academy data'); }
+}
+async function saveImport(monthKey, indexChanged){
+  setSyncing();
+  const ok1 = await verifiedBackendSet('import:'+monthKey, JSON.stringify(state.imports[monthKey]));
+  let ok2 = true;
+  if(indexChanged){
+    const months = sortImportMonthKeysChronologically(Object.keys(state.imports));
+    ok2 = await verifiedBackendSet('imports-index', JSON.stringify(months));
+  }
+  if(ok1 && ok2){ setSynced(); } else { setSaveFailed('this import'); }
+}
+async function deleteImport(monthKey){
+  setSyncing();
+  delete state.imports[monthKey];
+  if(state.activeImportMonth === monthKey) state.activeImportMonth = null;
+  if(state._importDetailMonth === monthKey) state._importDetailMonth = null;
+  await backendDelete('import:'+monthKey);
+  const months = sortImportMonthKeysChronologically(Object.keys(state.imports));
+  const ok = await verifiedBackendSet('imports-index', JSON.stringify(months));
+  if(ok){ setSynced(); } else { setSaveFailed('the imports list'); }
+  renderAll();
+}
+function setSyncing(){
+  const b = document.getElementById('mc-savebar');
+  if(b) b.innerHTML = '<span class="mc-dot" style="background:#c8791f"></span> saving…';
+}
+function setSynced(){
+  const b = document.getElementById('mc-savebar');
+  if(b) b.innerHTML = '<span class="mc-dot"></span> synced';
+  state._saveError = null;
+}
+function setSaveFailed(whatFailed){
+  const b = document.getElementById('mc-savebar');
+  if(b) b.innerHTML = '<span class="mc-dot" style="background:#b8390e"></span> NOT SAVED';
+  state._saveError = `Your last change to ${whatFailed} did NOT save — the Sheet still shows the old value. Please try the edit again, and check your connection.`;
+  renderAll();
+}
+
+// ---------- utils ----------
+function uid(){ return 's' + Math.random().toString(36).slice(2,10); }
+function money(n){
+  if(n===null||n===undefined||isNaN(n)) return '—';
+  const neg = n<0;
+  return (neg?'-':'') + '$' + Math.abs(n).toFixed(2);
+}
+function parseMonthLabelToDate(label){
+  const d = new Date(label + ' 1'); // "August 2026" -> "August 2026 1", parses to Aug 1 2026
+  return isNaN(d.getTime()) ? null : d;
+}
+// Sorts month keys (from state.imports) by the ACTUAL calendar date in their label,
+// not alphabetically - "august-2026" would otherwise sort before "july-2026" since
+// 'a' < 'j', which is backwards. Falls back to when it was imported if a label can't
+// be parsed as a date at all.
+function sortImportMonthKeysChronologically(monthKeys){
+  return monthKeys.slice().sort((a,b)=>{
+    const da = parseMonthLabelToDate(state.imports[a].label || a);
+    const db = parseMonthLabelToDate(state.imports[b].label || b);
+    if(da && db) return da - db;
+    if(da && !db) return -1;
+    if(!da && db) return 1;
+    return (state.imports[a].importedAt||0) - (state.imports[b].importedAt||0);
+  });
+}
+// Same idea for Rock Academy session.months, which are raw label strings, not keys.
+function sortMonthLabelsChronologically(labels){
+  return labels.slice().sort((a,b)=>{
+    const da = parseMonthLabelToDate(a);
+    const db = parseMonthLabelToDate(b);
+    if(da && db) return da - db;
+    if(da && !db) return -1;
+    if(!da && db) return 1;
+    return a.localeCompare(b);
+  });
+}
+
+function esc(s){
+  return (s===null||s===undefined) ? '' : String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function slugify(s){
+  return (s||'').toString().toLowerCase().trim().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+}
+
+// Studio's standard split: $75 instructor / $43 rent out of $118 total, held at the same
+// ratio for prorated amounts, rounded to the nearest $0.25 (matches actual sheet figures,
+// e.g. $88.50 -> $32.25 rent / $56.25 instructor).
+const INSTRUCTOR_RATIO = 75/118;
+function splitPay(rate){
+  if(rate===null||rate===undefined||isNaN(rate)) return {instructor:null, rent:null};
+  const rawInstr = rate * INSTRUCTOR_RATIO;
+  const instructor = Math.round(rawInstr*4)/4;
+  const rent = Math.round((rate-instructor)*4)/4;
+  return {instructor, rent};
+}
+
+// ---------- render shell ----------
+function renderTabs(){
+  const el = document.getElementById('mc-tabs');
+  let html = '';
+  html += tabBtn('summary', 'Studio P&L');
+  html += tabBtn('flags', 'Flags & Discrepancies');
+  html += tabBtn('payers', 'Payer Relationships');
+  html += tabBtn('import', 'Monthly Import');
+  html += '<div class="mc-tabgroup-label">Teachers</div>';
+  for(const t of TEACHERS){
+    html += tabBtn('teacher:'+t, t);
+  }
+  const activeSession = getActiveSession();
+  html += `<div class="mc-tabgroup-label">Rock Academy — ${esc(activeSession ? activeSession.name : 'no session')}</div>`;
+  html += tabBtn('rockoverview', 'Overview');
+  for(const b of (activeSession ? activeSession.bands : [])){
+    html += tabBtn('rockband:'+b.id, b.name);
+  }
+  html += tabBtn('rockshows', 'Shows');
+  html += tabBtn('rocksessions', '+ Sessions');
+  el.innerHTML = html;
+  el.querySelectorAll('.mc-tab').forEach(b=>{
+    b.addEventListener('click', ()=>{ state.activeTab = b.dataset.tab; renderAll(); });
+  });
+}
+function tabBtn(key, label){
+  const active = state.activeTab===key ? 'active' : '';
+  return `<div class="mc-tab ${active}" data-tab="${esc(key)}">${esc(label)}</div>`;
+}
+
+function renderAll(){
+  renderTabs();
+  const body = document.getElementById('mc-body');
+  let bannerHtml = '';
+  if(state._loadError){
+    bannerHtml += `<div style="background:#fbe9e0; border:1px solid #e8a67e; color:#9c3a0e; border-radius:8px; padding:12px 16px; margin-bottom:16px; font-size:13px;">
+      <b>⚠ ${esc(state._loadError)}</b>
+    </div>`;
+  }
+  if(state._saveError){
+    bannerHtml += `<div style="background:#fbe0e0; border:1px solid #e89a9a; color:#9c1e1e; border-radius:8px; padding:12px 16px; margin-bottom:16px; font-size:13px;">
+      <b>⚠ ${esc(state._saveError)}</b>
+    </div>`;
+  }
+  if(state.activeTab === 'summary') body.innerHTML = bannerHtml + renderSummary();
+  else if(state.activeTab === 'flags') { body.innerHTML = bannerHtml + renderFlags(); }
+  else if(state.activeTab === 'payers') body.innerHTML = bannerHtml + renderPayers();
+  else if(state.activeTab === 'import') { body.innerHTML = bannerHtml; renderImportTab(body); }
+  else if(state.activeTab.startsWith('teacher:')) body.innerHTML = bannerHtml + renderTeacher(state.activeTab.slice(8));
+  else if(state.activeTab === 'rockoverview') body.innerHTML = bannerHtml + renderRockOverview();
+  else if(state.activeTab.startsWith('rockband:')) body.innerHTML = bannerHtml + renderRockBand(state.activeTab.slice(9));
+  else if(state.activeTab === 'rockshows') body.innerHTML = bannerHtml + renderRockShows();
+  else if(state.activeTab === 'rocksessions') body.innerHTML = bannerHtml + renderRockSessions();
+  attachRosterHandlers();
+  attachPayerHandlers();
+  attachRockHandlers();
+  attachRockShowsHandlers();
+}
+
+// Studio's Rock Academy per-class teacher rates
+const STANDARD_BAND_PER_CLASS_RATE = 50; // per teacher, per class, standard ($116) bands
+const HOUSE_BAND_PER_CLASS_RATE = 67;     // per teacher, per class, House Band ($151, 2hr)
+function calcBandPay(band, monthLabel){
+  const perClassRate = band.tier === 'house_band' ? HOUSE_BAND_PER_CLASS_RATE : STANDARD_BAND_PER_CLASS_RATE;
+  const classes = (band.monthlyClasses && typeof band.monthlyClasses[monthLabel] === 'number')
+    ? band.monthlyClasses[monthLabel] : 4;
+  const teacherCount = [band.teacher1, band.teacher2].filter(Boolean).length;
+  const revenue = band.members.reduce((a,m)=> a + (m.freeViaHouseBand ? 0 : (m.rate||0)), 0);
+  const instructorTotal = classes * perClassRate * teacherCount;
+  const rent = revenue - instructorTotal;
+  const perTeacher = teacherCount>0 ? (classes * perClassRate) : 0;
+  return { classes, teacherCount, revenue, instructorTotal, rent, perTeacher, perClassRate };
+}
+function calcBandPaySessionTotal(band, months){
+  let instructorTotal=0, rent=0, revenue=0;
+  for(const m of months){
+    const p = calcBandPay(band, m);
+    instructorTotal += p.instructorTotal; rent += p.rent; revenue += p.revenue;
+  }
+  return { instructorTotal, rent, revenue };
+}
+
+// ---------- Rock Academy: Overview ----------
+function renderRockOverview(){
+  const session = getActiveSession();
+  if(!session){
+    return `<div class="mc-panel"><h2>Rock Academy</h2>
+      <div class="mc-empty">No session yet. Head to <b>+ Sessions</b> to start one.</div></div>`;
+  }
+  const bands = session.bands;
+  if(!state._activeRockMonth || !session.months.includes(state._activeRockMonth)){
+    state._activeRockMonth = session.months[session.months.length-1] || null;
+  }
+  const monthLabel = state._activeRockMonth;
+  const totalMembers = bands.reduce((a,b)=>a+b.members.length,0);
+  const paidMembers = bands.reduce((a,b)=>a+b.members.filter(m=>!m.freeViaHouseBand).length,0);
+  const freeMembers = totalMembers - paidMembers;
+  const totalInstructorPay = monthLabel ? bands.reduce((a,b)=> a + calcBandPay(b,monthLabel).instructorTotal, 0) : 0;
+  const totalRent = monthLabel ? bands.reduce((a,b)=> a + calcBandPay(b,monthLabel).rent, 0) : 0;
+
+  let html = `<div class="mc-panel">
+    <h2>Rock Academy — ${esc(session.name)}</h2>
+    <div class="mc-desc">Standard bands ($116) pay $${STANDARD_BAND_PER_CLASS_RATE}/class/teacher; House Band ($151, 2hr) pays $${HOUSE_BAND_PER_CLASS_RATE}/class/teacher — based on classes actually taught that month, which can vary month to month. Rock Explorers remains out of scope.</div>
+    <div class="mc-toolbar">
+      <button class="mc-btn secondary" id="mc-sync-payers-btn">Sync payer info from Private Lessons</button>
+    </div>
+    <div class="mc-toolbar">
+      <label class="mc-small">Month:</label>
+      <select class="mc-monthpick" id="mc-rock-month-select">
+        ${sortMonthLabelsChronologically(session.months).map(m=>`<option value="${esc(m)}" ${m===monthLabel?'selected':''}>${esc(m)}</option>`).join('')}
+      </select>
+      <input class="mc-input" id="mc-rock-new-month" style="max-width:140px" placeholder="e.g. August 2026">
+      <button class="mc-btn secondary" id="mc-rock-add-month">+ Add month</button>
+    </div>
+    <div class="mc-statrow">
+      <div class="mc-stat"><div class="mc-stat-label">Bands</div><div class="mc-stat-val">${bands.length}</div></div>
+      <div class="mc-stat"><div class="mc-stat-label">Total enrollments</div><div class="mc-stat-val">${totalMembers}</div></div>
+      <div class="mc-stat"><div class="mc-stat-label">Paid enrollments</div><div class="mc-stat-val">${paidMembers}</div></div>
+      <div class="mc-stat"><div class="mc-stat-label">Free (HB) enrollments</div><div class="mc-stat-val">${freeMembers}</div></div>
+    </div>
+    <div class="mc-statrow">
+      <div class="mc-stat"><div class="mc-stat-label">Instructor pay (${esc(monthLabel||'—')})</div><div class="mc-stat-val">${money(totalInstructorPay)}</div></div>
+      <div class="mc-stat"><div class="mc-stat-label">Rent (${esc(monthLabel||'—')})</div><div class="mc-stat-val">${money(totalRent)}</div></div>
+    </div>
+    <table class="mc-table">
+      <thead><tr><th>Band</th><th>Tier</th><th>Rate</th><th>Members</th><th>Teachers</th><th>Classes (${esc(monthLabel||'—')})</th><th>Instructor pay</th><th>Rent</th></tr></thead>
+      <tbody>
+        ${bands.map(b=>{
+          const rate = b.tier==='house_band' ? 151 : (b.members.find(m=>!m.freeViaHouseBand)?.rate ?? 116);
+          const teachers = [b.teacher1, b.teacher2].filter(Boolean).join(', ') || '—';
+          const pay = monthLabel ? calcBandPay(b, monthLabel) : null;
+          return `<tr><td>${esc(b.name)}</td><td>${b.tier==='house_band'?'House Band (2hr)':'Standard (90min)'}</td>
+            <td>${money(rate)}</td><td>${b.members.length}</td><td class="mc-small">${esc(teachers)}</td>
+            <td>${pay? pay.classes : '—'}</td>
+            <td>${pay? money(pay.instructorTotal) : '—'}</td>
+            <td>${pay? money(pay.rent) : '—'}</td></tr>`;
+        }).join('')}
+      </tbody>
+    </table>
+  </div>`;
+
+  // session total across all months entered so far
+  const sessTotals = bands.reduce((acc,b)=>{
+    const t = calcBandPaySessionTotal(b, session.months);
+    acc.instructor += t.instructorTotal; acc.rent += t.rent; acc.revenue += t.revenue;
+    return acc;
+  }, {instructor:0, rent:0, revenue:0});
+  const showPay = (session.shows||[]).reduce((a,s)=> a + (s.teachers||[]).length * SHOW_TEACHER_PAY, 0);
+  const netAfterShows = sessTotals.rent - showPay;
+  html += `<div class="mc-panel">
+    <h2>Session total — ${esc(session.name)}</h2>
+    <div class="mc-desc">Summed across all ${session.months.length} month${session.months.length===1?'':'s'} logged for this session so far. Show pay comes out of the Rock Academy balance separately from regular band class pay.</div>
+    <div class="mc-statrow">
+      <div class="mc-stat"><div class="mc-stat-label">Total revenue</div><div class="mc-stat-val">${money(sessTotals.revenue)}</div></div>
+      <div class="mc-stat"><div class="mc-stat-label">Band instructor pay</div><div class="mc-stat-val">${money(sessTotals.instructor)}</div></div>
+      <div class="mc-stat"><div class="mc-stat-label">Show pay</div><div class="mc-stat-val">${money(showPay)}</div></div>
+      <div class="mc-stat"><div class="mc-stat-label">Net to studio (rent \u2212 show pay)</div><div class="mc-stat-val">${money(netAfterShows)}</div></div>
+    </div>
+  </div>`;
+
+  setTimeout(()=>{
+    const sel = document.getElementById('mc-rock-month-select');
+    if(sel) sel.addEventListener('change', ()=>{ state._activeRockMonth = sel.value; renderAll(); });
+    const addBtn = document.getElementById('mc-rock-add-month');
+    if(addBtn) addBtn.addEventListener('click', ()=>{
+      const inp = document.getElementById('mc-rock-new-month');
+      const label = inp.value.trim();
+      if(!label) return;
+      if(!session.months.includes(label)) session.months.push(label);
+      state._activeRockMonth = label;
+      saveRockSessions(); renderAll();
+    });
+    const syncBtn = document.getElementById('mc-sync-payers-btn');
+    if(syncBtn) syncBtn.addEventListener('click', syncRockPayersFromPrivateLessons);
+  }, 0);
+  return html;
+}
+
+// ---------- Rock Academy: sync payer info from Private Lessons ----------
+// Almost every Rock Academy student also takes private lessons, so their payer/email
+// is already correct over there. A small number of students don't take private lessons
+// at all and will need their payer info entered manually on their Rock Academy row -
+// this just reports who those are rather than guessing.
+
+function syncRockPayersFromPrivateLessons(){
+  const session = getActiveSession();
+  if(!session) return;
+  const rosterByName = {};
+  for(const r of state.roster){
+    rosterByName[r.studentName.trim().toLowerCase()] = r;
+  }
+
+  let synced = 0, alreadyHad = 0, unmatched = [];
+
+  for(const band of session.bands){
+    for(const m of band.members){
+      const nameKey = m.studentName.trim().toLowerCase();
+      const hasInfo = (m.payerName && m.payerName.trim()) || (m.email && m.email.trim());
+      if(hasInfo){ alreadyHad++; continue; }
+
+      const match = rosterByName[nameKey];
+      if(match){
+        m.payerName = match.payerName || match.studentName;
+        m.email = match.email || '';
+        synced++;
+      } else {
+        unmatched.push(`${m.studentName} (${band.name})`);
+      }
+    }
+  }
+
+  saveRockSessions();
+  renderAll();
+
+  let msg = `Synced ${synced} student${synced===1?'':'s'} from Private Lessons.`;
+  if(alreadyHad) msg += ` ${alreadyHad} already had payer info and were left untouched.`;
+  if(unmatched.length) msg += `\n\nStill need manual entry (no matching private lesson found):\n- ${unmatched.join('\n- ')}`;
+  alert(msg);
+}
+
+// ---------- Rock Academy: Sessions ----------
+// ---------- Rock Academy: Shows ----------
+const SHOW_TEACHER_PAY = 50; // flat rate per teacher, per show, from the Rock Academy balance
+
+function renderRockShows(){
+  const session = getActiveSession();
+  if(!session){
+    return `<div class="mc-panel"><h2>Shows</h2><div class="mc-empty">No active session.</div></div>`;
+  }
+  if(!session.shows) session.shows = [];
+  const shows = session.shows;
+  const totalPay = shows.reduce((a,s)=> a + (s.teachers||[]).length * SHOW_TEACHER_PAY, 0);
+
+  let html = `<div class="mc-panel">
+    <h2>Shows — ${esc(session.name)}</h2>
+    <div class="mc-desc">Teachers who help run a show get a flat $${SHOW_TEACHER_PAY} each, paid from the Rock Academy balance — separate from regular band class pay.</div>
+    <div class="mc-statrow">
+      <div class="mc-stat"><div class="mc-stat-label">Shows this session</div><div class="mc-stat-val">${shows.length}</div></div>
+      <div class="mc-stat"><div class="mc-stat-label">Total show pay</div><div class="mc-stat-val">${money(totalPay)}</div></div>
+    </div>
+    <div class="mc-toolbar">
+      <button class="mc-btn" id="mc-add-show-btn">+ Add show</button>
+    </div>
+    <table class="mc-table">
+      <thead><tr>
+        <th style="width:16%">Date</th>
+        <th style="width:24%">Show name</th>
+        <th style="width:48%">Teachers who worked it (${money(SHOW_TEACHER_PAY)} each)</th>
+        <th style="width:8%">Pay</th>
+        <th style="width:4%"></th>
+      </tr></thead>
+      <tbody>
+        ${shows.map(s=>{
+          const teachers = s.teachers || [];
+          const pay = teachers.length * SHOW_TEACHER_PAY;
+          return `<tr data-show="${s.id}">
+            <td><input class="mc-input" type="date" data-showfield="date" data-show="${s.id}" value="${esc(s.date||'')}"></td>
+            <td><input class="mc-input" data-showfield="name" data-show="${s.id}" value="${esc(s.name||'')}" placeholder="e.g. Winter Showcase"></td>
+            <td>
+              <div style="display:flex; flex-wrap:wrap; gap:4px 10px;">
+                ${TEACHERS.map(t=>`<label class="mc-small" style="display:flex; align-items:center; gap:4px; white-space:nowrap;">
+                  <input type="checkbox" class="mc-checkbox" data-showteacher="${esc(t)}" data-show="${s.id}" ${teachers.includes(t)?'checked':''}> ${esc(t)}
+                </label>`).join('')}
+              </div>
+            </td>
+            <td style="font-family:var(--mono)">${money(pay)}</td>
+            <td><button class="mc-btn danger" data-action="delete-show" data-show="${s.id}">✕</button></td>
+          </tr>`;
+        }).join('')}
+      </tbody>
+      <tfoot>
+        <tr style="border-top:2px solid var(--ink); font-weight:800;">
+          <td colspan="3">TOTAL SHOW PAY (${esc(session.name)})</td>
+          <td style="font-family:var(--mono)">${money(totalPay)}</td>
+          <td></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>`;
+  return html;
+}
+
+function attachRockShowsHandlers(){
+  const session = getActiveSession();
+  if(!session) return;
+  if(!session.shows) session.shows = [];
+
+  const addBtn = document.getElementById('mc-add-show-btn');
+  if(addBtn) addBtn.addEventListener('click', ()=>{
+    session.shows.push({ id:'show'+Math.random().toString(36).slice(2,9), date:'', name:'New show', teachers:[] });
+    saveRockSessions(); renderAll();
+  });
+
+  document.querySelectorAll('[data-showfield]').forEach(el=>{
+    el.addEventListener('change', ()=>{
+      const show = session.shows.find(s=>s.id===el.dataset.show);
+      if(!show) return;
+      show[el.dataset.showfield] = el.value;
+      saveRockSessions(); renderAll();
+    });
+  });
+
+  document.querySelectorAll('[data-showteacher]').forEach(el=>{
+    el.addEventListener('change', ()=>{
+      const show = session.shows.find(s=>s.id===el.dataset.show);
+      if(!show) return;
+      const teacher = el.dataset.showteacher;
+      if(!show.teachers) show.teachers = [];
+      if(el.checked){
+        if(!show.teachers.includes(teacher)) show.teachers.push(teacher);
+      } else {
+        show.teachers = show.teachers.filter(t=>t!==teacher);
+      }
+      saveRockSessions(); renderAll();
+    });
+  });
+
+  document.querySelectorAll('[data-action="delete-show"]').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      if(!confirm('Remove this show?')) return;
+      session.shows = session.shows.filter(s=>s.id!==b.dataset.show);
+      saveRockSessions(); renderAll();
+    });
+  });
+}
+
+function renderRockSessions(){
+  const sessions = state.rockSessions || [];
+  let html = `<div class="mc-panel">
+    <h2>Rock Academy Sessions</h2>
+    <div class="mc-desc">Each session (~4 months) has its own bands, rosters, and teacher assignments. Starting a new session archives the current one — nothing is lost, it just stops being the active one.</div>
+    <div class="mc-toolbar">
+      <input class="mc-input" id="mc-new-session-name" style="max-width:200px" placeholder="e.g. Fall 2026">
+      <button class="mc-btn" id="mc-start-session-btn">+ Start new session (blank)</button>
+    </div>
+    <table class="mc-table">
+      <thead><tr><th>Session</th><th>Bands</th><th>Months logged</th><th>Status</th></tr></thead>
+      <tbody>
+        ${sessions.slice().reverse().map((s,i)=>{
+          const isActive = i===0;
+          return `<tr><td>${esc(s.name)}</td><td>${s.bands.length}</td><td class="mc-small">${s.months.map(esc).join(', ')||'—'}</td>
+            <td>${isActive? '<span class="mc-pill ok">active</span>' : '<span class="mc-pill info">archived</span>'}</td></tr>`;
+        }).join('')}
+      </tbody>
+    </table>
+  </div>`;
+  setTimeout(()=>{
+    const btn = document.getElementById('mc-start-session-btn');
+    if(btn) btn.addEventListener('click', ()=>{
+      const inp = document.getElementById('mc-new-session-name');
+      const name = inp.value.trim();
+      if(!name){ alert('Give the new session a name first (e.g. "Fall 2026").'); return; }
+      if(!confirm(`Start "${name}" as a brand new, completely blank Rock Academy session? The current session stays saved and viewable, just no longer active.`)) return;
+      state.rockSessions.push({ id: 'session_'+slugify(name)+'_'+Date.now(), name, months: [], bands: [] });
+      state._activeRockMonth = null;
+      state.activeTab = 'rockoverview';
+      saveRockSessions(); renderAll();
+    });
+  }, 0);
+  return html;
+}
+
+// ---------- Rock Academy: Overview (old, replaced above) ----------
+// ---------- Rock Academy: per-band ----------
+function renderRockBand(bandId){
+  const session = getActiveSession();
+  if(!session) return `<div class="mc-empty">No active session.</div>`;
+  const band = session.bands.find(b=>b.id===bandId);
+  if(!band) return `<div class="mc-empty">Band not found in the active session.</div>`;
+  if(!state._activeRockMonth || !session.months.includes(state._activeRockMonth)){
+    state._activeRockMonth = session.months[session.months.length-1] || null;
+  }
+  const monthLabel = state._activeRockMonth;
+  const rateLabel = band.tier==='house_band' ? '$151 (2hr House Band rate)' : '$116 (90min standard rate)';
+  const currentClasses = (monthLabel && band.monthlyClasses && typeof band.monthlyClasses[monthLabel]==='number')
+    ? band.monthlyClasses[monthLabel] : 4;
+
+  let html = `<div class="mc-panel">
+    <div class="mc-toolbar" style="justify-content:space-between;">
+      <div>
+        <h2 style="display:inline">
+          <input class="mc-input" data-rockfield="name" data-band="${band.id}" value="${esc(band.name)}" style="font-size:15px; font-weight:700; width:220px; display:inline-block;">
+        </h2>
+        <div class="mc-desc">${band.tier==='house_band'?'House Band tier':'Standard band'} · reference rate ${rateLabel} · ${esc(session.name)}</div>
+      </div>
+    </div>
+    <div class="mc-toolbar">
+      <label class="mc-small">Teacher 1</label>
+      <select class="mc-input" style="max-width:180px" data-rockfield="teacher1" data-band="${band.id}">
+        <option value="">—</option>
+        ${TEACHERS.map(t=>`<option value="${esc(t)}" ${band.teacher1===t?'selected':''}>${esc(t)}</option>`).join('')}
+      </select>
+      <label class="mc-small">Teacher 2</label>
+      <select class="mc-input" style="max-width:180px" data-rockfield="teacher2" data-band="${band.id}">
+        <option value="">—</option>
+        ${TEACHERS.map(t=>`<option value="${esc(t)}" ${band.teacher2===t?'selected':''}>${esc(t)}</option>`).join('')}
+      </select>
+    </div>
+    <div class="mc-toolbar">
+      <label class="mc-small" style="white-space:nowrap;">Sub note (optional)</label>
+      <input class="mc-input" data-rockfield="subNote" data-band="${band.id}" value="${esc(band.subNote||'')}" placeholder="e.g. 'Elisha subbed for John on 7/14'">
+    </div>`;
+
+  if(!monthLabel){
+    html += `<div class="mc-empty">No months logged for this session yet — add one from the Overview tab to start tracking classes and pay.</div></div>`;
+    return html;
+  }
+
+  const pay = calcBandPay(band, monthLabel);
+  html += `<div class="mc-toolbar">
+      <label class="mc-small">Month</label>
+      <select class="mc-input" style="max-width:160px" id="mc-rockband-month-select">
+        ${sortMonthLabelsChronologically(session.months).map(m=>`<option value="${esc(m)}" ${m===monthLabel?'selected':''}>${esc(m)}</option>`).join('')}
+      </select>
+      <label class="mc-small">Classes in ${esc(monthLabel)}</label>
+      <input class="mc-input mc-num" style="max-width:70px" data-rockmonth="classes" data-band="${band.id}" data-month="${esc(monthLabel)}" value="${currentClasses}">
+      <span class="mc-small">(billing stays a flat ${band.tier==='house_band'?'$151':'$116'}/month regardless — pay is based on classes actually taught, which can vary)</span>
+    </div>
+    <div class="mc-statrow">
+      <div class="mc-stat"><div class="mc-stat-label">Revenue (paid members)</div><div class="mc-stat-val">${money(pay.revenue)}</div></div>
+      <div class="mc-stat"><div class="mc-stat-label">Per teacher (${pay.classes} classes × $${pay.perClassRate})</div><div class="mc-stat-val">${money(pay.perTeacher)}</div></div>
+      <div class="mc-stat"><div class="mc-stat-label">Total instructor pay</div><div class="mc-stat-val">${money(pay.instructorTotal)}</div></div>
+      <div class="mc-stat"><div class="mc-stat-label">Rent (to studio)</div><div class="mc-stat-val">${money(pay.rent)}</div></div>
+    </div>`;
+
+  html += `
+    <div class="mc-toolbar">
+      <button class="mc-btn" data-action="add-rock-member" data-band="${band.id}">+ Add student</button>
+    </div>
+    <table class="mc-table">
+      <thead><tr>
+        <th style="width:20%">Student</th>
+        <th style="width:18%">Payer (if different)</th>
+        <th style="width:22%">Email</th>
+        <th style="width:12%">Rate</th>
+        <th style="width:14%">Free (HB)</th>
+        <th style="width:6%"></th>
+      </tr></thead>
+      <tbody>
+        ${band.members.map(m=>`<tr class="${m.freeViaHouseBand?'mc-flagrow':''}">
+          <td><input class="mc-input" data-rockmember="studentName" data-band="${band.id}" data-mid="${m.id}" value="${esc(m.studentName)}"></td>
+          <td><input class="mc-input" data-rockmember="payerName" data-band="${band.id}" data-mid="${m.id}" value="${esc(m.payerName)}" placeholder="same as student"></td>
+          <td><input class="mc-input" data-rockmember="email" data-band="${band.id}" data-mid="${m.id}" value="${esc(m.email)}" placeholder="payer email"></td>
+          <td><input class="mc-input mc-num" data-rockmember="rate" data-band="${band.id}" data-mid="${m.id}" value="${m.rate!=null?m.rate:''}" ${m.freeViaHouseBand?'disabled placeholder="free"':''}></td>
+          <td style="text-align:center"><input type="checkbox" class="mc-checkbox" data-rockmember="freeViaHouseBand" data-band="${band.id}" data-mid="${m.id}" ${m.freeViaHouseBand?'checked':''}></td>
+          <td><button class="mc-btn danger" data-action="delete-rock-member" data-band="${band.id}" data-mid="${m.id}">✕</button></td>
+        </tr>`).join('')}
+      </tbody>
+    </table>
+  </div>`;
+  return html;
+}
+
+function attachRockHandlers(){
+  const session = getActiveSession();
+  document.querySelectorAll('[data-rockfield]').forEach(el=>{
+    el.addEventListener('change', ()=>{
+      if(!session) return;
+      const band = session.bands.find(b=>b.id===el.dataset.band);
+      if(!band) return;
+      band[el.dataset.rockfield] = el.value;
+      saveRockSessions(); renderAll();
+    });
+  });
+  document.querySelectorAll('[data-rockmonth="classes"]').forEach(el=>{
+    el.addEventListener('change', ()=>{
+      if(!session) return;
+      const band = session.bands.find(b=>b.id===el.dataset.band);
+      if(!band) return;
+      const month = el.dataset.month;
+      if(!band.monthlyClasses) band.monthlyClasses = {};
+      band.monthlyClasses[month] = el.value===''? 4 : parseFloat(el.value);
+      saveRockSessions(); renderAll();
+    });
+  });
+  const rbMonthSel = document.getElementById('mc-rockband-month-select');
+  if(rbMonthSel) rbMonthSel.addEventListener('change', ()=>{
+    state._activeRockMonth = rbMonthSel.value; renderAll();
+  });
+  document.querySelectorAll('[data-rockmember]').forEach(el=>{
+    el.addEventListener('change', ()=>{
+      if(!session) return;
+      const band = session.bands.find(b=>b.id===el.dataset.band);
+      if(!band) return;
+      const m = band.members.find(x=>x.id===el.dataset.mid);
+      if(!m) return;
+      const field = el.dataset.rockmember;
+      if(el.type==='checkbox'){
+        m[field] = el.checked;
+        if(field==='freeViaHouseBand' && el.checked) m.rate = null;
+      } else if(field==='rate'){
+        m[field] = el.value===''? null : parseFloat(el.value);
+      } else {
+        m[field] = el.value;
+      }
+      saveRockSessions(); renderAll();
+    });
+  });
+  document.querySelectorAll('[data-action="add-rock-member"]').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      if(!session) return;
+      const band = session.bands.find(x=>x.id===b.dataset.band);
+      if(!band) return;
+      const defaultRate = band.tier==='house_band' ? 151 : 116;
+      band.members.push({ id:'rm'+Math.random().toString(36).slice(2,9), studentName:'New student', payerName:'', email:'', rate:defaultRate, freeViaHouseBand:false });
+      saveRockSessions(); renderAll();
+    });
+  });
+  document.querySelectorAll('[data-action="delete-rock-member"]').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      if(!confirm('Remove this student from the band?')) return;
+      if(!session) return;
+      const band = session.bands.find(x=>x.id===b.dataset.band);
+      if(!band) return;
+      band.members = band.members.filter(m=>m.id!==b.dataset.mid);
+      saveRockSessions(); renderAll();
+    });
+  });
+}
+
+
+// ---------- Teacher tab ----------
+// Finds the most recent import's flag result for a specific teacher+student, so the
+// Teacher tab can visually reflect "this person had a real payment problem last time
+// we checked" without needing to re-run reconciliation live.
+function getLatestFlagForStudent(teacherName, studentName){
+  const monthKeys = sortImportMonthKeysChronologically(Object.keys(state.imports));
+  for(let i=monthKeys.length-1; i>=0; i--){
+    const data = state.imports[monthKeys[i]];
+    const row = data.rows.find(r=>r.teacher===teacherName && r.student===studentName);
+    if(row) return row;
+  }
+  return null;
+}
+// "Real" problems that should red-out a row on the Teacher tab - deliberately excludes
+// rock_bundle (payment succeeded, just can't isolate the exact split) since that's not
+// actually a problem, and excludes anything already resolved (e.g. marked inactive).
+function isRealPaymentProblem(flagRow){
+  if(!flagRow || flagRow.flag==='OK' || flagRow.resolved) return false;
+  const cat = categorizeFlag(flagRow.flag);
+  return cat==='card_failure' || cat==='mismatch' || cat==='not_found' || cat==='refund';
+}
+
+// Sums classes taught and pay earned across every band this teacher is assigned to,
+// for one specific month - computed fresh each time, so editing a band's class count
+// or teacher assignment is reflected immediately, with no separate sync step needed.
+function getTeacherRockBandPayForMonth(teacherName, monthLabel){
+  const session = getActiveSession();
+  if(!session || !monthLabel) return { classes:0, pay:0 };
+  let classes=0, pay=0;
+  for(const band of session.bands){
+    if(band.teacher1 !== teacherName && band.teacher2 !== teacherName) continue;
+    const p = calcBandPay(band, monthLabel);
+    classes += p.classes; pay += p.perTeacher;
+  }
+  return { classes, pay };
+}
+// Shows aren't tied to a specific month (they're logged per-session), so this is
+// counted session-wide rather than for just one month.
+function getTeacherShowsPay(teacherName){
+  const session = getActiveSession();
+  if(!session) return { showsWorked:0, pay:0 };
+  let showsWorked=0;
+  for(const show of (session.shows||[])){
+    if((show.teachers||[]).includes(teacherName)) showsWorked++;
+  }
+  return { showsWorked, pay: showsWorked*SHOW_TEACHER_PAY };
+}
+
+function renderTeacher(teacherName){
+  const rows = state.roster.filter(s=>s.teacher===teacherName);
+  const active = rows.filter(r=>r.active);
+  const inactive = rows.filter(r=>!r.active);
+  let html = `<div class="mc-panel">
+    <h2>${esc(teacherName)}</h2>
+    <div class="mc-desc">${active.length} active student${active.length===1?'':'s'} · ${inactive.length} inactive · rent/instructor split at $75/$118 ratio, rounded to nearest $0.25 · a student flagged with a real payment problem in the latest import shows $0.00 and is excluded from totals until resolved</div>
+    <div class="mc-toolbar">
+      <button class="mc-btn" data-action="add-student" data-teacher="${esc(teacherName)}">+ Add student</button>
+      <button class="mc-btn secondary" data-action="toggle-inactive" data-teacher="${esc(teacherName)}">${state._showInactive? 'Hide':'Show'} inactive</button>
+    </div>
+    <table class="mc-table">
+      <thead><tr>
+        <th style="width:16%">Student</th>
+        <th style="width:15%">Payer (if different)</th>
+        <th style="width:18%">Email</th>
+        <th style="width:10%">Monthly rate</th>
+        <th style="width:9%">Rent</th>
+        <th style="width:9%">Instructor</th>
+        <th style="width:8%">Admin fee</th>
+        <th style="width:6%">Active</th>
+        <th style="width:5%"></th>
+      </tr></thead>
+      <tbody>`;
+  const list = state._showInactive ? rows : active;
+  let sumTotal=0, sumRent=0, sumInstructor=0;
+  for(const s of list){
+    const latestFlag = getLatestFlagForStudent(s.teacher, s.studentName);
+    const hasRealProblem = s.active && isRealPaymentProblem(latestFlag);
+    const {instructor, rent} = hasRealProblem ? {instructor:0, rent:0} : splitPay(s.monthlyRate);
+    if(s.active && typeof s.monthlyRate==='number' && !hasRealProblem){
+      sumTotal += s.monthlyRate;
+      sumRent += (rent||0);
+      sumInstructor += (instructor||0);
+    }
+    let rowClass = '';
+    if(!s.active) rowClass = 'mc-row-yellow';
+    else if(hasRealProblem) rowClass = 'mc-row-red';
+    html += `<tr data-id="${s.id}" class="${rowClass}">
+      <td><input class="mc-input" data-field="studentName" data-id="${s.id}" value="${esc(s.studentName)}"></td>
+      <td><input class="mc-input" data-field="payerName" data-id="${s.id}" value="${esc(s.payerName)}" placeholder="same as student"></td>
+      <td><input class="mc-input" data-field="email" data-id="${s.id}" value="${esc(s.email)}" placeholder="payer email"></td>
+      <td><input class="mc-input mc-num" data-field="monthlyRate" data-id="${s.id}" value="${s.monthlyRate!==null&&s.monthlyRate!==undefined?s.monthlyRate:''}"></td>
+      <td class="mc-small" style="text-align:right; font-family:var(--mono)">${hasRealProblem?'<span title="Not collected this month - excluded from totals">$0.00</span>':(rent!==null?money(rent):'—')}</td>
+      <td class="mc-small" style="text-align:right; font-family:var(--mono)">${hasRealProblem?'<span title="Not collected this month - excluded from totals">$0.00</span>':(instructor!==null?money(instructor):'—')}</td>
+      <td style="text-align:center"><input type="checkbox" class="mc-checkbox" data-field="adminFeePaid" data-id="${s.id}" ${s.adminFeePaid?'checked':''}></td>
+      <td style="text-align:center"><input type="checkbox" class="mc-checkbox" data-field="active" data-id="${s.id}" ${s.active?'checked':''}></td>
+      <td><button class="mc-btn danger" data-action="delete-student" data-id="${s.id}">✕</button></td>
+    </tr>`;
+  }
+  html += `</tbody>
+    <tfoot>
+      <tr style="border-top:2px solid var(--ink); font-weight:800;">
+        <td colspan="3">TOTALS (active, actually-collected students only)</td>
+        <td style="font-family:var(--mono)">${money(sumTotal)}</td>
+        <td style="font-family:var(--mono)">${money(sumRent)}</td>
+        <td style="font-family:var(--mono)">${money(sumInstructor)}</td>
+        <td colspan="3"></td>
+      </tr>
+    </tfoot>
+    </table></div>`;
+
+  html += renderTeacherRockAcademySummary(teacherName);
+  html += renderTeacherHistory(teacherName);
+  return html;
+}
+
+function renderTeacherRockAcademySummary(teacherName){
+  const session = getActiveSession();
+  const shows = getTeacherShowsPay(teacherName);
+  if(!session){
+    return `<div class="mc-panel">
+      <h2>Rock Academy</h2>
+      <div class="mc-empty">No active Rock Academy session yet.</div>
+    </div>`;
+  }
+  const months = sortMonthLabelsChronologically(session.months);
+  if(!state._activeRockMonth || !months.includes(state._activeRockMonth)){
+    state._activeRockMonth = months[months.length-1] || null;
+  }
+  const monthLabel = state._activeRockMonth;
+  const thisMonth = monthLabel ? getTeacherRockBandPayForMonth(teacherName, monthLabel) : {classes:0, pay:0};
+  const sessionTotal = months.reduce((acc,m)=>{
+    const r = getTeacherRockBandPayForMonth(teacherName, m);
+    acc.classes += r.classes; acc.pay += r.pay; return acc;
+  }, {classes:0, pay:0});
+  const combinedThisMonth = thisMonth.pay + shows.pay;
+
+  const bandsForTeacher = session.bands.filter(b=>b.teacher1===teacherName || b.teacher2===teacherName);
+
+  const htmlOut = `<div class="mc-panel">
+    <h2>Rock Academy — ${esc(session.name)}</h2>
+    <div class="mc-desc">Classes and shows this teacher is assigned to, pulled live from Rock Academy - editing a band's class count, teacher assignment, or the Shows tab updates this automatically.</div>
+    <div class="mc-toolbar">
+      <label class="mc-small">Month:</label>
+      <select class="mc-monthpick" id="mc-teacher-rock-month">
+        ${months.map(m=>`<option value="${esc(m)}" ${m===monthLabel?'selected':''}>${esc(m)}</option>`).join('')}
+      </select>
+    </div>
+    <div class="mc-statrow">
+      <div class="mc-stat"><div class="mc-stat-label">Classes taught (${esc(monthLabel||'—')})</div><div class="mc-stat-val">${thisMonth.classes}</div></div>
+      <div class="mc-stat"><div class="mc-stat-label">Shows worked (this session)</div><div class="mc-stat-val">${shows.showsWorked}</div></div>
+      <div class="mc-stat"><div class="mc-stat-label">Rock Academy pay (${esc(monthLabel||'—')} + shows)</div><div class="mc-stat-val">${money(combinedThisMonth)}</div></div>
+      <div class="mc-stat"><div class="mc-stat-label">Band pay, session to date</div><div class="mc-stat-val">${money(sessionTotal.pay)}</div></div>
+    </div>
+    ${bandsForTeacher.length ? `<table class="mc-table">
+      <thead><tr><th>Band</th><th>Classes (${esc(monthLabel||'—')})</th><th>Pay</th></tr></thead>
+      <tbody>
+        ${bandsForTeacher.map(b=>{
+          const p = calcBandPay(b, monthLabel);
+          return `<tr><td>${esc(b.name)}</td><td>${p.classes}</td><td>${money(p.perTeacher)}</td></tr>`;
+        }).join('')}
+      </tbody>
+    </table>` : `<div class="mc-empty">Not currently assigned to any Rock Academy band.</div>`}
+  </div>`;
+  setTimeout(()=>{
+    const sel = document.getElementById('mc-teacher-rock-month');
+    if(sel) sel.addEventListener('change', ()=>{ state._activeRockMonth = sel.value; renderAll(); });
+  }, 0);
+  return htmlOut;
+}
+
+function renderTeacherHistory(teacherName){
+  const monthKeys = sortImportMonthKeysChronologically(Object.keys(state.imports));
+  if(!monthKeys.length) return '';
+  const selected = (state._teacherHistoryMonth && state.imports[state._teacherHistoryMonth])
+    ? state._teacherHistoryMonth : monthKeys[monthKeys.length-1];
+  const data = state.imports[selected];
+  const teacherRows = data.rows.filter(r=>r.teacher===teacherName);
+
+  let html = `<div class="mc-panel">
+    <h2>History</h2>
+    <div class="mc-desc">Past months' billing results for this teacher, straight from each month's import. Read-only — this is a record of what happened, not the live roster.</div>
+    <div class="mc-toolbar">
+      <label class="mc-small">Month:</label>
+      <select class="mc-monthpick" id="mc-teacher-history-month">
+        ${monthKeys.map(m=>`<option value="${m}" ${m===selected?'selected':''}>${esc(state.imports[m].label||m)}</option>`).join('')}
+      </select>
+    </div>`;
+
+  if(!teacherRows.length){
+    html += `<div class="mc-empty">No billing data for this teacher in ${esc(data.label||selected)}.</div></div>`;
+  } else {
+    html += `<table class="mc-table">
+      <thead><tr><th>Student</th><th>Payer</th><th>Expected</th><th>Collected</th><th>Status</th></tr></thead>
+      <tbody>
+        ${teacherRows.map(r=>{
+          const cls = r.flag==='OK' ? '' : (categorizeFlag(r.flag)==='rock_bundle' ? 'mc-row-green' : 'mc-row-red');
+          return `<tr class="${cls}">
+            <td>${esc(r.student)}</td><td class="mc-small">${esc(r.payer)}</td>
+            <td>${r.expected!=null?money(r.expected):'—'}</td><td>${r.wlCollected!=null?money(r.wlCollected):'—'}</td>
+            <td>${r.flag==='OK' ? '<span class="mc-pill ok">OK</span>' : `<span class="mc-flagtext">${esc(r.flag)}</span>`}</td>
+          </tr>`;
+        }).join('')}
+      </tbody>
+    </table></div>`;
+  }
+
+  setTimeout(()=>{
+    const sel = document.getElementById('mc-teacher-history-month');
+    if(sel) sel.addEventListener('change', ()=>{ state._teacherHistoryMonth = sel.value; renderAll(); });
+  }, 0);
+  return html;
+}
+
+// Shared action: marks a student inactive on their roster, and marks the specific
+// import row that triggered it as resolved - used from both the Flags tab and the
+// Monthly Import detail view, since both can surface a "not found" row.
+async function markStudentInactiveFromImportRow(monthKey, rowIdx){
+  const importData = state.imports[monthKey];
+  if(!importData) return;
+  const flagRow = importData.rows[rowIdx];
+  if(!flagRow) return;
+  const rosterEntry = state.roster.find(s=>s.teacher===flagRow.teacher && s.studentName===flagRow.student);
+  if(!rosterEntry){
+    alert(`Couldn't find ${flagRow.student} on ${flagRow.teacher}'s roster to mark inactive - they may have already been renamed or removed.`);
+    return;
+  }
+  if(!confirm(`Mark ${flagRow.student} (${flagRow.teacher}) as inactive? They'll no longer show up as an active student, and won't be flagged as "not found" in future imports.`)) return;
+  rosterEntry.active = false;
+  await saveRoster();
+  flagRow.resolved = true;
+  await verifiedBackendSet('import:'+monthKey, JSON.stringify(importData));
+  renderAll();
+}
+
+// ---------- Flags & Discrepancies tab ----------
+function categorizeFlag(flag){
+  if(flag==='OK') return 'ok';
+  if(flag.startsWith('UNRESOLVED FAILED PAYMENT')) return 'card_failure';
+  if(flag.startsWith('NOT FOUND')) return 'not_found';
+  if(flag.startsWith('REFUND')) return 'refund';
+  if(flag.startsWith('AMOUNT MISMATCH')) return 'mismatch';
+  if(flag.startsWith('includes Rock Academy')) return 'rock_bundle';
+  if(flag.startsWith('includes $30 admin fee')) return 'admin_fee';
+  return 'other';
+}
+// Single source of truth for "is this actually a problem, or just informational?" -
+// used consistently for matched/flagged counts, revenue rollup, and coloring, so a
+// verified bundled charge behaves the same as a plain OK everywhere in the app.
+function isAccountedFor(flag){
+  const cat = categorizeFlag(flag);
+  return cat==='ok' || cat==='rock_bundle' || cat==='admin_fee';
+}
+const FLAG_LABELS = {
+  card_failure: 'Card / payment failure — no successful retry yet',
+  not_found: 'Active student not found in this month\u2019s WellnessLiving export',
+  refund: 'Refund on account — needs manual review',
+  mismatch: 'Amount collected doesn\u2019t match roster rate',
+  rock_bundle: 'Bundled with Rock Academy (payment OK, can\u2019t isolate private-lesson $ precisely)',
+  admin_fee: '$30 admin fee detected and marked paid automatically',
+  other: 'Other',
+};
+const FLAG_ORDER = ['card_failure','mismatch','not_found','refund','rock_bundle','admin_fee','other'];
+
+function renderFlags(){
+  const months = sortImportMonthKeysChronologically(Object.keys(state.imports));
+  if(!months.length){
+    return `<div class="mc-panel"><h2>Flags &amp; Discrepancies</h2>
+      <div class="mc-empty">Nothing to check yet — import a month's WellnessLiving export first, and anything needing a look (card failures, mismatched amounts, missing students) will show up here automatically.</div></div>`;
+  }
+  const monthKey = state._flagsMonth && state.imports[state._flagsMonth] ? state._flagsMonth : months[months.length-1];
+  const data = state.imports[monthKey];
+  const rows = data.rows.filter(r=>r.flag!=='OK');
+
+  const grouped = {};
+  for(const cat of FLAG_ORDER) grouped[cat] = [];
+  for(const r of rows){
+    const cat = categorizeFlag(r.flag);
+    (grouped[cat] || (grouped[cat]=[])).push(r);
+  }
+
+  let html = `<div class="mc-panel">
+    <h2>Flags &amp; Discrepancies</h2>
+    <div class="mc-desc">Everything that needs your eyes for the selected month — card failures, mismatched amounts, missing students, refunds, and Rock-Academy-bundled charges.</div>
+    <div class="mc-toolbar">
+      <label class="mc-small">Month:</label>
+      <select class="mc-monthpick" id="mc-flags-month-select">
+        ${months.map(m=>`<option value="${m}" ${m===monthKey?'selected':''}>${esc(state.imports[m].label||m)}</option>`).join('')}
+      </select>
+    </div>
+    <div class="mc-statrow">
+      ${FLAG_ORDER.filter(c=>grouped[c].length>0 || c==='card_failure' || c==='mismatch').map(cat=>{
+        const n = grouped[cat].length;
+        return `<div class="mc-stat"><div class="mc-stat-label">${esc(FLAG_LABELS[cat])}</div><div class="mc-stat-val" style="color:${n>0?'#b8390e':'#2f6f4f'}">${n}</div></div>`;
+      }).join('')}
+    </div>
+  </div>`;
+
+  if(!rows.length){
+    html += `<div class="mc-panel"><div class="mc-empty">No private-lesson flags for ${esc(data.label||monthKey)} — everything matched cleanly.</div></div>`;
+  } else {
+    for(const cat of FLAG_ORDER){
+      if(!grouped[cat].length) continue;
+      const rowClass = (cat==='rock_bundle' || cat==='admin_fee') ? 'mc-row-green' : 'mc-flagrow';
+      html += `<div class="mc-panel">
+        <h2>${esc(FLAG_LABELS[cat])}</h2>
+        <div class="mc-desc">${grouped[cat].length} item${grouped[cat].length===1?'':'s'}</div>
+        <table class="mc-table">
+          <thead><tr><th>Teacher</th><th>Student</th><th>Payer</th><th>Expected</th><th>Collected</th><th>Detail</th>${cat==='not_found'?'<th></th>':''}</tr></thead>
+          <tbody>
+            ${grouped[cat].map(r=>{
+              const rowIdx = data.rows.indexOf(r);
+              const actionCell = cat==='not_found'
+                ? (r.resolved
+                    ? `<td><span class="mc-pill info">✓ marked inactive</span></td>`
+                    : `<td><button class="mc-btn secondary" data-action="mark-inactive-from-flag" data-row-idx="${rowIdx}">Mark inactive</button></td>`)
+                : '';
+              return `<tr class="${rowClass}">
+              <td>${esc(r.teacher)}</td><td>${esc(r.student)}</td><td class="mc-small">${esc(r.payer)}</td>
+              <td>${r.expected!=null?money(r.expected):'—'}</td><td>${r.wlCollected!=null?money(r.wlCollected):'—'}</td>
+              <td class="mc-flagtext">${esc(r.flag)}</td>${actionCell}
+            </tr>`;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>`;
+    }
+  }
+
+  // Rock Academy flags for this same import, if this month's report was matched against a session
+  const rockFlags = data.rockFlags || [];
+  const rockFlagged = rockFlags.filter(r=>r.flag!=='OK');
+  const rockOk = rockFlags.filter(r=>r.flag==='OK');
+  if(rockFlags.length){
+    html += `<div class="mc-panel">
+      <h2>Rock Academy — ${esc(data.label||monthKey)}</h2>
+      <div class="mc-toolbar">
+        <span class="mc-pill ok">${rockOk.length} matched</span>
+        <span class="mc-pill warn">${rockFlagged.length} flagged</span>
+      </div>`;
+    if(!rockFlagged.length){
+      html += `<div class="mc-empty">No Rock Academy flags for ${esc(data.label||monthKey)} — every paid enrollment matched cleanly.</div></div>`;
+    } else {
+      html += `<table class="mc-table">
+        <thead><tr><th>Band</th><th>Student</th><th>Payer</th><th>Detail</th></tr></thead>
+        <tbody>
+          ${rockFlagged.map(r=>`<tr class="mc-flagrow">
+            <td>${esc(r.band)}</td><td>${esc(r.student)}</td><td class="mc-small">${esc(r.payer)}</td>
+            <td class="mc-flagtext">${esc(r.flag)}</td>
+          </tr>`).join('')}
+        </tbody>
+      </table></div>`;
+    }
+  }
+
+  setTimeout(()=>{
+    const sel = document.getElementById('mc-flags-month-select');
+    if(sel) sel.addEventListener('change', ()=>{ state._flagsMonth = sel.value; renderAll(); });
+    document.querySelectorAll('[data-action="mark-inactive-from-flag"]').forEach(b=>{
+      b.addEventListener('click', ()=>{
+        markStudentInactiveFromImportRow(monthKey, parseInt(b.dataset.rowIdx, 10));
+      });
+    });
+  }, 0);
+  return html;
+}
+
+// ---------- Payer relationships tab ----------
+function renderPayers(){
+  let html = `<div class="mc-panel">
+    <h2>Student ↔ Payer relationships</h2>
+    <div class="mc-desc">Every student across every teacher, with who actually pays for them. Student and payer are listed even when identical, so nothing is ambiguous.</div>
+    <div class="mc-toolbar">
+      <input class="mc-input mc-search" id="mc-payer-search" placeholder="Search student, payer, teacher, or email…">
+    </div>
+    <table class="mc-table" id="mc-payers-table">
+      <thead><tr>
+        <th>Teacher</th><th>Student</th><th>Payer</th><th>Email</th><th>Status</th>
+      </tr></thead>
+      <tbody id="mc-payers-tbody"></tbody>
+    </table>
+  </div>`;
+  setTimeout(fillPayersTable, 0);
+  return html;
+}
+function fillPayersTable(){
+  const tbody = document.getElementById('mc-payers-tbody');
+  if(!tbody) return;
+  const q = (document.getElementById('mc-payer-search')?.value || '').toLowerCase();
+  const rows = state.roster
+    .slice()
+    .sort((a,b)=> a.teacher.localeCompare(b.teacher) || a.studentName.localeCompare(b.studentName))
+    .filter(s=>{
+      if(!q) return true;
+      return [s.teacher,s.studentName,s.payerName,s.email].join(' ').toLowerCase().includes(q);
+    });
+  if(!rows.length){ tbody.innerHTML = `<tr><td colspan="5" class="mc-empty">No matches.</td></tr>`; return; }
+  tbody.innerHTML = rows.map(s=>{
+    const payerDisplay = (s.payerName && s.payerName.trim()) ? s.payerName : s.studentName;
+    return `<tr>
+      <td>${esc(s.teacher)}</td>
+      <td>${esc(s.studentName)}</td>
+      <td>${esc(payerDisplay)}</td>
+      <td class="mc-small">${esc(s.email)||'—'}</td>
+      <td>${s.active? '<span class="mc-pill ok">active</span>' : '<span class="mc-pill info">inactive</span>'}</td>
+    </tr>`;
+  }).join('');
+}
+function attachPayerHandlers(){
+  const search = document.getElementById('mc-payer-search');
+  if(search) search.addEventListener('input', fillPayersTable);
+}
+
+// ---------- Roster edit handlers ----------
+function attachRosterHandlers(){
+  document.querySelectorAll('[data-field]').forEach(el=>{
+    const evt = el.type === 'checkbox' ? 'change' : 'change';
+    el.addEventListener(evt, ()=>{
+      const id = el.dataset.id;
+      const field = el.dataset.field;
+      const row = state.roster.find(s=>s.id===id);
+      if(!row) return;
+      if(el.type === 'checkbox') row[field] = el.checked;
+      else if(field==='monthlyRate') row[field] = el.value===''? null : parseFloat(el.value);
+      else row[field] = el.value;
+      saveRoster();
+      renderAll();
+    });
+  });
+  document.querySelectorAll('[data-action="delete-student"]').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      if(!confirm('Remove this student from the roster?')) return;
+      state.roster = state.roster.filter(s=>s.id!==b.dataset.id);
+      saveRoster(); renderAll();
+    });
+  });
+  document.querySelectorAll('[data-action="add-student"]').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      state.roster.push({ id: uid(), teacher: b.dataset.teacher, studentName:'New student',
+        payerName:'', email:'', monthlyRate:118, adminFeePaid:false, active:true });
+      saveRoster(); renderAll();
+    });
+  });
+  document.querySelectorAll('[data-action="toggle-inactive"]').forEach(b=>{
+    b.addEventListener('click', ()=>{ state._showInactive = !state._showInactive; renderAll(); });
+  });
+}
+
+// ---------- Studio P&L tab ----------
+function renderSummary(){
+  const privateMonths = Object.keys(state.imports); // slug -> label via state.imports[slug].label
+  // Build unified month list: union of private-lesson import labels and all Rock Academy
+  // session months (across all sessions), matched by slug so "July 2026" from either side
+  // lines up as one row.
+  const monthMap = {}; // slug -> label
+  for(const slug of privateMonths) monthMap[slug] = state.imports[slug].label || slug;
+  for(const sess of (state.rockSessions||[])){
+    for(const label of sess.months){
+      const slug = slugify(label);
+      if(!monthMap[slug]) monthMap[slug] = label;
+    }
+  }
+  const allSlugs = Object.keys(monthMap).sort();
+  if(!allSlugs.length){
+    return `<div class="mc-panel"><h2>Studio P&amp;L</h2>
+      <div class="mc-empty">No data yet. Import a WellnessLiving export in <b>Monthly Import</b>, or log a month under <b>Rock Academy</b>.</div></div>`;
+  }
+  const activeSlug = (state.activeImportMonth && monthMap[state.activeImportMonth]) ? state.activeImportMonth : allSlugs[allSlugs.length-1];
+  const activeLabel = monthMap[activeSlug];
+
+  // Private lesson figures for this month, if any
+  const priv = state.imports[activeSlug] ? state.imports[activeSlug].summary : null;
+
+  // Rock Academy figures for this month, summed across all sessions that logged it
+  let rockStandard = {revenue:0, instructor:0, rent:0};
+  let rockHouse = {revenue:0, instructor:0, rent:0};
+  for(const sess of (state.rockSessions||[])){
+    const match = sess.months.find(m=>slugify(m)===activeSlug);
+    if(!match) continue;
+    for(const band of sess.bands){
+      const pay = calcBandPay(band, match);
+      const bucket = band.tier==='house_band' ? rockHouse : rockStandard;
+      bucket.revenue += pay.revenue; bucket.instructor += pay.instructorTotal; bucket.rent += pay.rent;
+    }
+  }
+
+  const privRevenue = priv? priv.totalRevenue : 0;
+  const privInstructor = priv? priv.totalInstructor : 0;
+  const privRent = priv? priv.totalRent : 0;
+  const rockRevenue = rockStandard.revenue + rockHouse.revenue;
+  const rockInstructor = rockStandard.instructor + rockHouse.instructor;
+  const rockRent = rockStandard.rent + rockHouse.rent;
+  const combinedRevenue = privRevenue + rockRevenue;
+  const combinedInstructor = privInstructor + rockInstructor;
+  const combinedRent = privRent + rockRent;
+
+  let html = `<div class="mc-panel">
+    <h2>Studio P&amp;L — ${esc(activeLabel)}</h2>
+    <div class="mc-desc">Combined across private lessons and Rock Academy for this month. Unresolved/flagged private-lesson items are excluded from these totals until resolved.</div>
+    <div class="mc-toolbar">
+      <label class="mc-small">Month:</label>
+      <select class="mc-monthpick" id="mc-month-select">
+        ${allSlugs.map(sl=>`<option value="${sl}" ${sl===activeSlug?'selected':''}>${esc(monthMap[sl])}</option>`).join('')}
+      </select>
+    </div>
+    <div class="mc-statrow">
+      <div class="mc-stat"><div class="mc-stat-label">Total revenue</div><div class="mc-stat-val">${money(combinedRevenue)}</div></div>
+      <div class="mc-stat"><div class="mc-stat-label">To instructors</div><div class="mc-stat-val">${money(combinedInstructor)}</div></div>
+      <div class="mc-stat"><div class="mc-stat-label">To studio (rent)</div><div class="mc-stat-val">${money(combinedRent)}</div></div>
+      ${priv? `<div class="mc-stat"><div class="mc-stat-label">Flagged items (private lessons)</div><div class="mc-stat-val" style="color:${priv.flaggedCount>0?'#b8390e':'#2f6f4f'}">${priv.flaggedCount}</div></div>` : ''}
+    </div>
+    <table class="mc-table">
+      <thead><tr><th>Program</th><th>Revenue</th><th>Instructor pay</th><th>Rent (studio)</th></tr></thead>
+      <tbody>
+        <tr><td>Private lessons</td><td>${money(privRevenue)}</td><td>${money(privInstructor)}</td><td>${money(privRent)}</td></tr>
+        <tr><td>Rock Academy — standard bands</td><td>${money(rockStandard.revenue)}</td><td>${money(rockStandard.instructor)}</td><td>${money(rockStandard.rent)}</td></tr>
+        <tr><td>Rock Academy — House Band</td><td>${money(rockHouse.revenue)}</td><td>${money(rockHouse.instructor)}</td><td>${money(rockHouse.rent)}</td></tr>
+        <tr style="border-top:2px solid var(--ink); font-weight:800;"><td>Combined total</td><td>${money(combinedRevenue)}</td><td>${money(combinedInstructor)}</td><td>${money(combinedRent)}</td></tr>
+      </tbody>
+    </table>
+  </div>`;
+
+  if(priv){
+    html += `<div class="mc-panel">
+      <h2>Private lessons — by teacher</h2>
+      <table class="mc-table">
+        <thead><tr><th>Teacher</th><th>Students matched</th><th>Revenue</th><th>Instructor pay</th><th>Rent (studio)</th><th>Flagged</th></tr></thead>
+        <tbody>
+          ${TEACHERS.map(t=>{
+            const row = priv.byTeacher[t] || {matched:0, revenue:0, instructor:0, rent:0, flagged:0};
+            return `<tr><td>${esc(t)}</td><td>${row.matched}</td><td>${money(row.revenue)}</td><td>${money(row.instructor)}</td><td>${money(row.rent)}</td>
+              <td>${row.flagged>0? `<span class="mc-pill warn">${row.flagged}</span>` : '<span class="mc-pill ok">0</span>'}</td></tr>`;
+          }).join('')}
+        </tbody>
+      </table>
+    </div>`;
+  }
+  setTimeout(()=>{
+    const sel = document.getElementById('mc-month-select');
+    if(sel) sel.addEventListener('change', ()=>{ state.activeImportMonth = sel.value; renderAll(); });
+  }, 0);
+  return html;
+}
+
+// ---------- Monthly Import tab ----------
+function renderImportTab(body){
+  const months = sortImportMonthKeysChronologically(Object.keys(state.imports));
+  let html = `<div class="mc-panel">
+    <h2>Monthly Import</h2>
+    <div class="mc-desc">Upload the WellnessLiving "All Sales" export for the month (.csv). Handles WellnessLiving's tab-delimited / UTF-16 quirk automatically.</div>
+    <div class="mc-toolbar">
+      <label class="mc-small">Label this month:</label>
+      <input class="mc-input" id="mc-month-label" style="max-width:160px" placeholder="e.g. July 2026">
+    </div>
+    <div class="mc-dropzone" id="mc-dropzone">Drop the WellnessLiving export here, or click to choose a file</div>
+    <input type="file" id="mc-file-input" accept=".csv,.txt" style="display:none">
+    <div id="mc-import-status" class="mc-small" style="margin-top:10px;"></div>
+  </div>
+  <div class="mc-panel">
+    <h2>Past imports</h2>
+    <table class="mc-table">
+      <thead><tr><th>Month</th><th>Imported</th><th>Matched OK</th><th>Flagged</th><th></th><th></th></tr></thead>
+      <tbody>
+      ${months.length? months.map(m=>{
+        const d = state.imports[m];
+        const flagged = d.rows.filter(r=>r.flag!=='OK').length;
+        const ok = d.rows.filter(r=>r.flag==='OK').length;
+        return `<tr><td>${esc(d.label||m)}</td><td class="mc-small">${new Date(d.importedAt).toLocaleDateString()}</td>
+          <td><span class="mc-pill ok">${ok}</span></td><td>${flagged? `<span class="mc-pill warn">${flagged}</span>`:'<span class="mc-pill ok">0</span>'}</td>
+          <td><a class="mc-link" data-view-month="${m}">view detail</a></td>
+          <td><button class="mc-btn danger" data-action="delete-import" data-month="${m}" title="Delete this import">🗑</button></td></tr>`;
+      }).join('') : `<tr><td colspan="6" class="mc-empty">No imports yet.</td></tr>`}
+      </tbody>
+    </table>
+  </div>`;
+
+  if(state._importDetailMonth && state.imports[state._importDetailMonth]){
+    html += renderImportDetail(state._importDetailMonth);
+  }
+
+  body.innerHTML = html;
+
+  const dz = document.getElementById('mc-dropzone');
+  const fi = document.getElementById('mc-file-input');
+  dz.addEventListener('click', ()=>fi.click());
+  dz.addEventListener('dragover', e=>{e.preventDefault(); dz.classList.add('drag');});
+  dz.addEventListener('dragleave', ()=> dz.classList.remove('drag'));
+  dz.addEventListener('drop', e=>{
+    e.preventDefault(); dz.classList.remove('drag');
+    if(e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+  });
+  fi.addEventListener('change', ()=>{ if(fi.files.length) handleFile(fi.files[0]); });
+
+  body.querySelectorAll('[data-view-month]').forEach(a=>{
+    a.addEventListener('click', ()=>{ state._importDetailMonth = a.dataset.viewMonth; renderAll(); });
+  });
+  body.querySelectorAll('[data-action="delete-import"]').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      const monthKey = b.dataset.month;
+      const label = state.imports[monthKey] ? (state.imports[monthKey].label || monthKey) : monthKey;
+      if(!confirm(`Delete the "${label}" import? This removes its match/flag results so you can re-run it fresh. Your roster and Rock Academy data are not affected.`)) return;
+      deleteImport(monthKey);
+    });
+  });
+  body.querySelectorAll('[data-action="mark-inactive-from-detail"]').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      markStudentInactiveFromImportRow(b.dataset.month, parseInt(b.dataset.rowIdx, 10));
+    });
+  });
+}
+
+function renderImportDetail(monthKey){
+  const d = state.imports[monthKey];
+  const flagged = d.rows.filter(r=>r.flag!=='OK');
+  const ok = d.rows.filter(r=>r.flag==='OK');
+  return `<div class="mc-panel">
+    <h2>${esc(d.label||monthKey)} — detail</h2>
+    <div class="mc-toolbar">
+      <span class="mc-pill ok">${ok.length} matched</span>
+      <span class="mc-pill warn">${flagged.length} flagged</span>
+    </div>
+    <table class="mc-table">
+      <thead><tr><th>Teacher</th><th>Student</th><th>Payer</th><th>Expected</th><th>Collected</th><th>Status</th><th></th></tr></thead>
+      <tbody>
+        ${d.rows.slice().sort((a,b)=> (a.flag==='OK') - (b.flag==='OK')).map(r=>{
+          const rowIdx = d.rows.indexOf(r);
+          const cat = categorizeFlag(r.flag);
+          const cls = r.flag==='OK' ? '' : ((cat==='rock_bundle'||cat==='admin_fee') ? 'mc-row-green' : 'mc-row-red');
+          const actionCell = cat==='not_found'
+            ? (r.resolved
+                ? `<td><span class="mc-pill info">✓ inactive</span></td>`
+                : `<td><button class="mc-btn secondary" data-action="mark-inactive-from-detail" data-row-idx="${rowIdx}" data-month="${monthKey}">Mark inactive</button></td>`)
+            : '<td></td>';
+          return `<tr class="${cls}">
+            <td>${esc(r.teacher)}</td><td>${esc(r.student)}</td><td class="mc-small">${esc(r.payer)}</td>
+            <td>${r.expected!=null?money(r.expected):'—'}</td><td>${r.wlCollected!=null?money(r.wlCollected):'—'}</td>
+            <td>${r.flag==='OK'? '<span class="mc-pill ok">OK</span>' : '<span class="mc-flagtext">'+esc(r.flag)+'</span>'}</td>${actionCell}
+          </tr>`;
+        }).join('')}
+      </tbody>
+    </table>
+  </div>`;
+}
+
+// ---------- CSV parsing (WellnessLiving quirks: UTF-16LE + tab-delimited) ----------
+async function readFileSmart(file){
+  const buf = await file.arrayBuffer();
+  const bytes = new Uint8Array(buf.slice(0,4));
+  let text;
+  if(bytes[0]===0xFF && bytes[1]===0xFE){
+    text = new TextDecoder('utf-16le').decode(buf);
+  } else if(bytes[0]===0xFE && bytes[1]===0xFF){
+    text = new TextDecoder('utf-16be').decode(buf);
+  } else {
+    text = new TextDecoder('utf-8').decode(buf);
+  }
+  return text;
+}
+function detectDelimiter(text){
+  const firstLine = text.split(/\r?\n/)[0] || '';
+  const tabs = (firstLine.match(/\t/g)||[]).length;
+  const commas = (firstLine.match(/,/g)||[]).length;
+  return tabs > commas ? '\t' : ',';
+}
+function parseMoney(x){
+  if(x===null||x===undefined) return 0;
+  const s = String(x).replace(/[$,]/g,'').trim();
+  const n = parseFloat(s);
+  return isNaN(n) ? 0 : n;
+}
+
+async function handleFile(file){
+  const statusEl = document.getElementById('mc-import-status');
+  statusEl.textContent = 'Reading file…';
+  try{
+    const text = await readFileSmart(file);
+    const delim = detectDelimiter(text);
+    const parsed = Papa.parse(text, { header:true, delimiter: delim, skipEmptyLines:true });
+    if(parsed.errors && parsed.errors.length){
+      console.warn('CSV parse warnings', parsed.errors);
+    }
+    const rows = parsed.data;
+    statusEl.textContent = `Parsed ${rows.length} transaction rows. Matching against roster…`;
+    const result = runReconciliation(rows);
+    if(result.rosterChanged) await saveRoster(); // e.g. $30 admin fee auto-detected and checked off
+    const label = document.getElementById('mc-month-label').value.trim() || guessMonthLabel(rows) || 'Untitled month';
+    const monthKey = label.toLowerCase().replace(/[^a-z0-9]+/g,'-');
+
+    // Also match Rock Academy charges from the same report against the active session's bands
+    const session = getActiveSession();
+    let rockFlags = [];
+    if(session){
+      const isNewMonth = !session.months.includes(label);
+      if(isNewMonth) session.months.push(label);
+      rockFlags = runRockReconciliation(rows);
+      // Only re-upload the whole Rock Academy dataset (all bands/members/shows/class
+      // counts) if this month label is actually new - re-running the same month while
+      // troubleshooting shouldn't resend data that hasn't changed at all.
+      if(isNewMonth) await saveRockSessions();
+    }
+
+    const isNewImportMonth = !(monthKey in state.imports);
+    state.imports[monthKey] = { label, rows: result.rows, summary: result.summary, rockFlags, importedAt: Date.now() };
+    state.activeImportMonth = monthKey;
+    state._activeRockMonth = label;
+    await saveImport(monthKey, isNewImportMonth);
+    const rockOk = rockFlags.filter(r=>r.flag==='OK').length;
+    const rockFlagged = rockFlags.filter(r=>r.flag!=='OK').length;
+    statusEl.textContent = `Done — private lessons: ${result.rows.filter(r=>r.flag==='OK').length} matched, ${result.rows.filter(r=>r.flag!=='OK').length} flagged. Rock Academy: ${rockOk} matched, ${rockFlagged} flagged.`;
+    state._importDetailMonth = monthKey;
+    renderAll();
+  }catch(err){
+    console.error(err);
+    statusEl.textContent = 'Something went wrong reading that file: ' + err.message;
+  }
+}
+function guessMonthLabel(rows){
+  const first = rows.find(r=>r.Date);
+  if(!first) return null;
+  const d = new Date(first.Date);
+  if(isNaN(d)) return null;
+  return d.toLocaleString('default',{month:'long', year:'numeric'});
+}
+
+// ---------- Rock Academy reconciliation (same report, matched against active session's bands) ----------
+function detectRockItem(row){
+  const items = (row.Items||'').toLowerCase();
+  const cat = (row['Revenue Category']||'').toLowerCase();
+  return items.includes('rock') || cat.includes('rock');
+}
+function runRockReconciliation(salesRows){
+  const norm = s => (s||'').toString().trim().toLowerCase();
+  const byEmail = {};
+  const byClient = {};
+  for(const row of salesRows){
+    if(!detectRockItem(row)) continue;
+    const email = norm(row.Email);
+    const client = norm(row.Client);
+    const amt = parseMoney(row['Total Paid']);
+    const status = (row['Payment Status']||'').trim();
+    const collected = (status==='Successful' || status==='Account Debited') ? amt : 0;
+    const isFail = status==='Failed';
+    if(email && email!=='nan'){
+      if(!byEmail[email]) byEmail[email] = {anyCollected:false, anyFail:false, payer:row.Client};
+      const g = byEmail[email]; if(collected>0) g.anyCollected=true; if(isFail) g.anyFail=true;
+    }
+    if(client){
+      if(!byClient[client]) byClient[client] = {anyCollected:false, anyFail:false, payer:row.Client};
+      const g = byClient[client]; if(collected>0) g.anyCollected=true; if(isFail) g.anyFail=true;
+    }
+  }
+  const results = [];
+  const session = getActiveSession();
+  if(!session) return results;
+  for(const band of session.bands){
+    for(const m of band.members){
+      if(m.freeViaHouseBand) continue; // no charge expected for a free HB second-band slot
+      const email = norm(m.email);
+      const payerGuess = norm(m.payerName || m.studentName);
+      let idx = null;
+      if(email && byEmail[email]) idx = byEmail[email];
+      else if(byClient[payerGuess]) idx = byClient[payerGuess];
+
+      // Fallback: most Rock Academy students also take private lessons, and that
+      // roster already has correct payer/email. Use it automatically rather than
+      // requiring the "Sync payer info" button to have been run first.
+      if(!idx){
+        const privateMatch = state.roster.find(r =>
+          r.studentName.trim().toLowerCase() === m.studentName.trim().toLowerCase());
+        if(privateMatch){
+          const privEmail = norm(privateMatch.email);
+          const privPayerGuess = norm(privateMatch.payerName || privateMatch.studentName);
+          if(privEmail && byEmail[privEmail]) idx = byEmail[privEmail];
+          else if(byClient[privPayerGuess]) idx = byClient[privPayerGuess];
+        }
+      }
+
+      let flag = 'OK';
+      if(!idx) flag = 'NOT FOUND IN WL EXPORT (Rock Academy)';
+      else if(idx.anyFail && !idx.anyCollected) flag = 'UNRESOLVED FAILED PAYMENT (Rock Academy)';
+      results.push({ band: band.name, bandId: band.id, student: m.studentName,
+        payer: idx ? idx.payer : (m.payerName||m.studentName), flag });
+    }
+  }
+  return results;
+}
+
+// ---------- Reconciliation logic (mirrors the matching approach validated earlier) ----------
+// Looks up what a specific payer actually owes for Rock Academy this session, by
+// matching against the same email/payer-name used on the private lesson side - lets
+// bundled charges be verified against real numbers instead of just assumed correct.
+function getRockAcademyExpectedForPayer(email, payerNameGuess){
+  const session = getActiveSession();
+  if(!session) return { amount: 0, members: [] };
+  const normEmail = (email||'').trim().toLowerCase();
+  const normPayer = (payerNameGuess||'').trim().toLowerCase();
+  let amount = 0;
+  const members = [];
+  for(const band of session.bands){
+    for(const m of band.members){
+      if(m.freeViaHouseBand) continue; // no charge expected for a free HB second-band slot
+      const mEmail = (m.email||'').trim().toLowerCase();
+      const mPayer = (m.payerName || m.studentName || '').trim().toLowerCase();
+      let matches = (normEmail && mEmail && mEmail===normEmail) || (normPayer && mPayer===normPayer);
+
+      // Fallback: this Rock Academy member's own payer info may be blank - check
+      // whether their name matches a private-lesson roster entry with this payer instead.
+      if(!matches){
+        const privateMatch = state.roster.find(r =>
+          r.studentName.trim().toLowerCase() === m.studentName.trim().toLowerCase());
+        if(privateMatch){
+          const privEmail = (privateMatch.email||'').trim().toLowerCase();
+          const privPayer = (privateMatch.payerName || privateMatch.studentName || '').trim().toLowerCase();
+          matches = (normEmail && privEmail && privEmail===normEmail) || (normPayer && privPayer===normPayer);
+        }
+      }
+
+      if(matches && typeof m.rate === 'number'){
+        amount += m.rate;
+        members.push(`${m.studentName} (${band.name})`);
+      }
+    }
+  }
+  return { amount, members };
+}
+
+function runReconciliation(salesRows){
+  const norm = s => (s||'').toString().trim().toLowerCase();
+  const byEmail = {};
+  const byClient = {};
+  let rosterChanged = false;
+
+  for(const row of salesRows){
+    const email = norm(row.Email);
+    const client = norm(row.Client);
+    const amt = parseMoney(row['Total Paid']);
+    const status = (row['Payment Status']||'').trim();
+    const items = (row.Items||'');
+    const revCat = (row['Revenue Category']||'');
+    const collected = (status==='Successful' || status==='Account Debited') ? amt : 0;
+    const isRefundCase = (status==='Fully Refunded' || status==='Full Refund');
+    const isFail = status==='Failed';
+    const hasRock = items.includes('Rock Academy');
+    // WellnessLiving labels this explicitly in Revenue Category (e.g. "Administration
+    // Fee, Private Lessons") - use that real label instead of guessing from the dollar amount.
+    const hasAdminFee = revCat.includes('Administration Fee') || items.includes('Administration Fee');
+
+    if(email && email!=='nan'){
+      if(!byEmail[email]) byEmail[email] = {net:0, hasRefund:false, hasRock:false, hasAdminFee:false, adminFeeRowAmounts:[], anyCollected:false, anyFail:false, payer:row.Client};
+      const g = byEmail[email];
+      g.net += collected; if(isRefundCase) g.hasRefund=true; if(hasRock) g.hasRock=true;
+      if(hasAdminFee){ g.hasAdminFee=true; if(collected>0) g.adminFeeRowAmounts.push(collected); }
+      if(collected>0) g.anyCollected=true; if(isFail) g.anyFail=true;
+    }
+    if(client){
+      if(!byClient[client]) byClient[client] = {net:0, hasRefund:false, hasRock:false, hasAdminFee:false, adminFeeRowAmounts:[], anyCollected:false, anyFail:false, payer:row.Client};
+      const g = byClient[client];
+      g.net += collected; if(isRefundCase) g.hasRefund=true; if(hasRock) g.hasRock=true;
+      if(hasAdminFee){ g.hasAdminFee=true; if(collected>0) g.adminFeeRowAmounts.push(collected); }
+      if(collected>0) g.anyCollected=true; if(isFail) g.anyFail=true;
+    }
+  }
+
+  const active = state.roster.filter(s=>s.active);
+
+  // If the exact same student name appears on more than one active roster row (e.g. a
+  // student who takes lessons with two different teachers, like a shared band member),
+  // always treat those rows as one combined group by name - this is more reliable than
+  // trusting that payer/email data was entered identically on both teachers' sheets,
+  // which is easy to get slightly out of sync since each sheet is edited separately.
+  const nameCounts = {};
+  for(const s of active){
+    const n = norm(s.studentName);
+    nameCounts[n] = (nameCounts[n]||0) + 1;
+  }
+
+  const groups = {};
+  for(const s of active){
+    const nameKey = norm(s.studentName);
+    let key = null;
+    if(nameCounts[nameKey] > 1){
+      key = 'samestudent:'+nameKey;
+    } else {
+      const email = norm(s.email);
+      if(email && byEmail[email]) key = 'email:'+email;
+      else {
+        const payerGuess = norm(s.payerName || s.studentName);
+        if(byClient[payerGuess]) key = 'name:'+payerGuess;
+      }
+    }
+    if(!key) key = 'none:'+s.id;
+    if(!groups[key]) groups[key] = [];
+    groups[key].push(s);
+  }
+
+  const outRows = [];
+  const byTeacher = {};
+  for(const t of TEACHERS) byTeacher[t] = {matched:0, revenue:0, instructor:0, rent:0, flagged:0};
+  let totalRevenue=0, totalInstructor=0, totalRent=0, flaggedCount=0;
+
+  for(const key of Object.keys(groups)){
+    const members = groups[key];
+    if(key.startsWith('none:')){
+      for(const s of members){
+        outRows.push({teacher:s.teacher, student:s.studentName, payer:'NOT FOUND', expected:s.monthlyRate, wlCollected:null, flag:'NOT FOUND IN WL EXPORT'});
+        flaggedCount++; byTeacher[s.teacher].flagged++;
+      }
+      continue;
+    }
+    let idx = null;
+    let resolvedEmail = '', resolvedPayer = '';
+    if(key.startsWith('email:')){ idx = byEmail[key.slice(6)]; resolvedEmail = key.slice(6); }
+    else if(key.startsWith('name:')){ idx = byClient[key.slice(5)]; resolvedPayer = key.slice(5); }
+    else if(key.startsWith('samestudent:')){
+      // same named student across 2+ teachers - use whichever member's own email/payer
+      // actually resolves to a real WL charge, since only one entry might have it filled in
+      for(const s of members){
+        const email = norm(s.email);
+        if(email && byEmail[email]){ idx = byEmail[email]; resolvedEmail = email; break; }
+        const payerGuess = norm(s.payerName || s.studentName);
+        if(byClient[payerGuess]){ idx = byClient[payerGuess]; resolvedPayer = payerGuess; break; }
+      }
+    }
+    if(!idx){
+      // same-named-student group where none of the entries matched any WL charge at all
+      for(const s of members){
+        outRows.push({teacher:s.teacher, student:s.studentName, payer:'NOT FOUND', expected:s.monthlyRate, wlCollected:null, flag:'NOT FOUND IN WL EXPORT'});
+        flaggedCount++; byTeacher[s.teacher].flagged++;
+      }
+      continue;
+    }
+    const totalExpected = members.reduce((a,s)=> a + (typeof s.monthlyRate==='number'? s.monthlyRate:0), 0);
+    const wl = idx.net;
+    let flag = 'OK';
+    if(idx.anyFail && !idx.anyCollected) flag = 'UNRESOLVED FAILED PAYMENT — no successful retry found';
+    else if(idx.hasRefund) flag = 'REFUND ON ACCOUNT — review manually';
+    else if(idx.hasRock){
+      // Verify against real Rock Academy rates rather than just assuming the bundle is fine
+      const rockInfo = getRockAcademyExpectedForPayer(resolvedEmail, resolvedPayer);
+      const combinedExpected = totalExpected + rockInfo.amount;
+      if(rockInfo.amount > 0 && Math.abs(wl - combinedExpected) < 0.01){
+        flag = `includes Rock Academy (${rockInfo.members.join(', ')}) — $${wl.toFixed(2)} collected covers $${totalExpected.toFixed(2)} private lesson + $${rockInfo.amount.toFixed(2)} Rock Academy, fully accounted for`;
+      } else {
+        flag = `AMOUNT MISMATCH (private + Rock Academy): expected $${combinedExpected.toFixed(2)} ($${totalExpected.toFixed(2)} private + $${rockInfo.amount.toFixed(2)} Rock Academy${rockInfo.amount===0?' — no matching Rock Academy enrollment found':''}), WL collected $${wl.toFixed(2)}`;
+      }
+    }
+    else if(idx.hasAdminFee){
+      // WellnessLiving bills this $30 fee on its own automated schedule, independent of
+      // whether we've already logged it as paid on our end - so seeing it again for an
+      // already-checked student is normal, not an error. As long as the extra amount is
+      // cleanly explained by $30 (or there's no extra at all), treat it as accounted for.
+      const extraAmount = wl - totalExpected;
+
+      // Still try to attribute a specific charge to a specific unpaid student, purely
+      // as a convenience so their box gets checked - not required for this to be OK.
+      const unpaidAdminFeeMembers = members.filter(m => !m.adminFeePaid);
+      let attributed = null;
+      for(const amt of idx.adminFeeRowAmounts){
+        const candidates = unpaidAdminFeeMembers.filter(m => Math.abs(amt - (m.monthlyRate + 30)) < 0.01);
+        if(candidates.length === 1){ attributed = candidates[0]; break; }
+      }
+      if(attributed){ attributed.adminFeePaid = true; rosterChanged = true; }
+
+      if(Math.abs(extraAmount) < 0.01){
+        flag = 'OK';
+      } else if(Math.abs(extraAmount % 30) < 0.01 && extraAmount > 0){
+        flag = `includes $30 admin fee (confirmed by WellnessLiving)${attributed ? ` for ${attributed.studentName}` : ''} — $${wl.toFixed(2)} collected covers $${totalExpected.toFixed(2)} lesson + $${extraAmount.toFixed(2)} admin fee`;
+      } else {
+        flag = `AMOUNT MISMATCH (admin fee included, but total doesn't add up): expected around $${totalExpected.toFixed(2)}, WL collected $${wl.toFixed(2)}`;
+      }
+    }
+    else if(Math.abs(wl - totalExpected) > 0.01){
+      const diff = wl - totalExpected;
+      const unpaidAdminFeeMembers = members.filter(m => !m.adminFeePaid);
+      if(Math.abs(diff - 30) < 0.01 && unpaidAdminFeeMembers.length === 1){
+        // Fallback: WellnessLiving didn't explicitly label this one, but the amount
+        // still lines up exactly with a single unpaid student's admin fee.
+        unpaidAdminFeeMembers[0].adminFeePaid = true;
+        rosterChanged = true;
+        flag = `includes $30 admin fee — $${wl.toFixed(2)} collected covers $${totalExpected.toFixed(2)} lesson + $30.00 admin fee (marked paid automatically)`;
+      } else {
+        flag = `AMOUNT MISMATCH: expected $${totalExpected.toFixed(2)}, WL collected $${wl.toFixed(2)}`;
+      }
+    }
+    if(members.length>1 && flag!=='OK') flag += ` [shared payer covers ${members.length} students]`;
+    const accountedFor = isAccountedFor(flag);
+
+    for(const s of members){
+      // Show this member's proportional share of the group's collected total, not the
+      // full group total on every row - otherwise siblings sharing a payer each show
+      // the whole family's charge, which looks like the money was counted twice.
+      const share = totalExpected>0 ? (s.monthlyRate/totalExpected) : (1/members.length);
+      const memberCollected = accountedFor ? wl*share : wl;
+      outRows.push({teacher:s.teacher, student:s.studentName, payer:idx.payer, expected:s.monthlyRate, wlCollected: Math.round(memberCollected*100)/100, flag});
+      const bt = byTeacher[s.teacher];
+      if(accountedFor){
+        bt.matched++;
+        const rev = wl*share;
+        totalRevenue += rev; bt.revenue += rev;
+        const instr = s.monthlyRate * 0.6356; // ~75/118 standard instructor ratio, rounded to nearest .50 skipped here for summary-level rollup
+        const rent = s.monthlyRate - instr;
+        totalInstructor += instr; bt.instructor += instr;
+        totalRent += rent; bt.rent += rent;
+      } else {
+        flaggedCount++; bt.flagged++;
+      }
+    }
+  }
+
+  return {
+    rows: outRows,
+    summary: { totalRevenue, totalInstructor, totalRent, flaggedCount, byTeacher },
+    rosterChanged
+  };
+}
+
+// ---------- Passcode gate ----------
+function showPasscodeScreen(errorMsg){
+  const root = document.getElementById('mc-root');
+  root.innerHTML = `
+    <div style="max-width:340px; margin:80px auto; text-align:center; font-family:var(--sans);">
+      <div style="font-size:20px; font-weight:800; margin-bottom:4px;">Madcap <span style="color:var(--amber-deep)">Payroll &amp; P&amp;L</span></div>
+      <div style="font-size:12px; color:var(--muted); margin-bottom:20px;">Enter the shared passcode to continue</div>
+      <input type="password" id="mc-passcode-input" class="mc-input" style="text-align:center; margin-bottom:10px;" placeholder="Passcode">
+      <button class="mc-btn" id="mc-passcode-submit" style="width:100%;">Continue</button>
+      ${errorMsg ? `<div style="color:var(--warn); font-size:12px; margin-top:10px;">${esc(errorMsg)}</div>` : ''}
+    </div>`;
+  document.getElementById('mc-passcode-submit').addEventListener('click', trySubmitPasscode);
+  document.getElementById('mc-passcode-input').addEventListener('keydown', (e)=>{ if(e.key==='Enter') trySubmitPasscode(); });
+}
+
+async function trySubmitPasscode(){
+  const input = document.getElementById('mc-passcode-input');
+  const btn = document.getElementById('mc-passcode-submit');
+  const val = (input.value||'').trim();
+  if(!val) return;
+  if(btn){ btn.disabled = true; btn.textContent = 'Checking…'; }
+  const slowNotice = setTimeout(()=>{
+    if(btn) btn.textContent = 'Still checking… (first login on a new browser can take a few extra seconds)';
+  }, 4000);
+  APP_PASSCODE = val;
+  const test = await backendGet('roster');
+  clearTimeout(slowNotice);
+  if(test.unauthorized){
+    APP_PASSCODE = null;
+    showPasscodeScreen('Incorrect passcode — try again.');
+    return;
+  }
+  if(test.networkError){
+    APP_PASSCODE = null;
+    showPasscodeScreen('Could not reach the server — check your connection and try again.');
+    return;
+  }
+  try{ localStorage.setItem('madcap_app_passcode', val); }catch(e){}
+  boot();
+}
+
+async function boot(){
+  await loadState();
+  renderAll();
+}
+
+// ---------- boot ----------
+(async function initGate(){
+  let saved = null;
+  try{ saved = localStorage.getItem('madcap_app_passcode'); }catch(e){}
+  if(saved){
+    APP_PASSCODE = saved;
+    const test = await backendGet('roster');
+    if(test.unauthorized){
+      APP_PASSCODE = null;
+      try{ localStorage.removeItem('madcap_app_passcode'); }catch(e){}
+      showPasscodeScreen('Saved passcode no longer works — please re-enter it.');
+    } else if(test.networkError){
+      // Don't wipe the saved passcode over a transient connection issue; let the person retry.
+      APP_PASSCODE = null;
+      showPasscodeScreen('Could not reach the server — check your connection and try again.');
+    } else {
+      boot();
+    }
+  } else {
+    showPasscodeScreen(null);
+  }
+})();
+
+})();
+</script>
